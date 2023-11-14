@@ -51,4 +51,11 @@ Depending on the number of UEs {i}, follow the steps:
 2. ./iperf_client_{i}ues.sh <rate_ue{i}> <duration>, eg: ./iperf_client_2ues.sh 10M 10M 1000
 
 ## Run the Real Time RIC
-To inititate default scheduling:
+To inititate default scheduling (Max Weight):
+cd real_time_RIC
+./run_defaultscheduling.sh <{i}>, eg: ./run_deafultscheduling.sh 2 for 2 UEs  
+
+To initiate training for RL agaent
+cd real_time_RIC
+./run_ppo.sh  
+

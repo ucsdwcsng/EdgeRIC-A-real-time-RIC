@@ -1,0 +1,88 @@
+defaults:
+  - _self_
+
+exp:
+  name: "unnamed"
+
+algorithm: "PPO"
+num_seeds: 1 # Number of seeded trains
+num_iters: 100 # Number of iterations to train for
+num_eval_episodes: 2000 # Number of evaluation episodes to test for (to compare against baseline agents)
+
+env: "EdgeRIC"
+
+env_config:
+  augment_state_space: False # Add backpressure to state space
+  delay_state: 0
+  delay_action: 0
+  seed: -1 # No seed
+  T: 5000
+  num_RBGs: 17 # Modify according to MHz of operation?
+  num_UEs: 2
+  backlog_population: 
+    - [1, 3000] # TTIs between chunk arrivals ,chunk_size(bytes) - UE1
+    - [1, 3000] # TTIs between chunk arrivals ,chunk_size(bytes) - UE2
+
+  cqi_trace: "stream_rl/envs/cqi_traces/data_triangle.csv" # Train Trace for 2 UEs
+  cqi_trace_eval: "stream_rl/envs/cqi_traces/data_triangle.csv" # Eval Trace for 2 UEs
+  reward: "throughput"
+  #reward: "stalls"
+  #reward: "negative_backlog_len"
+  base_station:
+    max_len: 300000 # Bytes
+  # cqi_map: {    # [Mean throughput, Std] (Mbps)
+  #           1 : [0.4432, 0.0],
+  #           2 : [0.6394, 0.0],
+  #           3 : [0.6990, 0.0],
+  #           4 : [0.9112, 0.0],
+  #           5 : [1.0014, 0.0],
+  #           6 : [1.3261, 0.0],
+  #           7 : [1.5028, 0.0],
+  #           8 : [1.9077, 0.0],
+  #           9 : [2.0347, 0.0],
+  #           10 : [2.0542, 0.0],
+  #           11 : [2.0479, 0.0],
+  #           12 : [2.0517, 0.0],
+  #           13 : [2.0303, 0.0],
+  #           14 : [2.0239, 0.0],
+  #           15 : [2.0477, 0.0],
+  #           }
+  cqi_map: {    # [Mean throughput, Std] (Mbps)
+            0 : [0, 0],
+            1 : [0.4432, 0.2206],
+            2 : [0.6394, 0.2047],
+            3 : [0.6990, 0.3575],
+            4 : [0.9112, 0.2882],
+            5 : [1.0014, 0.4647],
+            6 : [1.3261, 0.3873],
+            7 : [1.5028, 0.5879],
+            8 : [1.9077, 0.3314],
+            9 : [2.0347, 0.3120],
+            10 : [2.0542, 0.3142],
+            11 : [2.0479, 0.3019],
+            12 : [2.0517, 0.3086],
+            13 : [2.0303, 0.3170],
+            14 : [2.0239, 0.3053],
+            15 : [2.0477, 0.2942],
+            }
+    
+  # Old mappings
+  # cqi_map: {
+  #           1 : 0.4432,
+  #           2 : 0.2344,
+  #           3 : 0.3770,
+  #           4 : 0.6016,
+  #           5 : 0.8770,
+  #           6 : 1.1758,
+  #           7 : 1.4766,
+  #           8 : 1.9141,
+  #           9 : 2.4063,
+  #           10 : 2.7305,
+  #           11 : 3.3223,
+  #           12 : 3.9023,
+  #           13 : 4.5234,
+  #           14 : 5.1152,
+  #           15 : 5.5547,
+  #           }
+    
+  

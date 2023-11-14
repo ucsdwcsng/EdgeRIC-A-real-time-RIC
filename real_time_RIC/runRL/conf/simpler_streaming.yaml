@@ -1,0 +1,26 @@
+defaults:
+  - _self_
+
+exp:
+  name: "unnamed"
+
+algorithm: "VI"
+
+env: "SimplerStreamingEnv"
+
+env_config:
+  discount_factor: 0.99
+  T: 1000
+  reward: "Cost_1"
+  cost_params:
+    r: 7.0
+    lambda: 1.2
+  prob_new_chunk: 1.0
+  base_station:
+    channel_probs: [0.6, 0.8, 0.9,]
+    max_len: 10
+  media_app:
+    playout_probs: [0.6, 0.8, 0.9]
+    max_len: 10
+    
+  

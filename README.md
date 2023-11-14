@@ -18,7 +18,7 @@ sudo make install
 sudo ldconfig  
 
 ### Install srsRAN supporting EdgeRIC messages and control
-git clone https://github.com/ucsdwcsng/EdgeRIC_whittleIndex.git  
+git clone https://github.com/ushasigh/EdgeRIC-A-real-time-RIC
 cd EdgeRIC_main  
 mkdir build  
 cd build  

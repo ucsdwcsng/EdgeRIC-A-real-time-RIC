@@ -46,9 +46,9 @@ Depending on the number of UEs {i}, follow the steps:
 1. ./top_block_{i}ue_23.04MHz.py
 2. ./run_srsran_{i}ues.sh
 
-## Run the Real Time RIC
-To inititate default scheduling:
-
 ### Starting iperf tarffic 
 1. ./iperf_server_{i}ues.sh
-2. ./iperf_client_{i}ues.sh <rate_ue{i}> <duration>, eg: ./iperf_client_2ues.sh 10M 10M 1000 
+2. ./iperf_client_{i}ues.sh <rate_ue{i}> <duration>, eg: ./iperf_client_2ues.sh 10M 10M 1000
+
+## Run the Real Time RIC
+To inititate default scheduling:

@@ -55,7 +55,7 @@ To inititate default scheduling (Max Weight):
 cd real_time_RIC  
 ./run_defaultscheduling.sh <{i}>, eg: ./run_deafultscheduling.sh 2 for 2 UEs    
 
-To initiate training for RL agaent
-cd real_time_RIC
-./run_ppo.sh  
+To initiate training for RL agent:  
+cd real_time_RIC  
+./run_ppo.sh   
 

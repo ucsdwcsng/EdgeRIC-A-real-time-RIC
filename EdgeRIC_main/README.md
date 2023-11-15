@@ -23,3 +23,8 @@ Support
 =======
 
 Mailing list: https://lists.srsran.com/mailman/listinfo/srsran-users
+
+Instructions for EdgeRIC [TODO]
+=======
+CQI chnaging format with params.txt
+.config files

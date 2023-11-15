@@ -1,4 +1,4 @@
-# EdgeRIC_whittleIndex
+# EdgeRIC
 ## Installing srsRAN-EdgeRIC
 ### Install zmq
 git clone https://github.com/zeromq/libzmq.git  

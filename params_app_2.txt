@@ -1,0 +1,19 @@
+1500 8
+0 0.01
+50002
+ipc:///tmp/socket_mbuff_2
+
+
+
+# UE2
+# line 1: sz_bulk to send by server [Kbytes per each interval],   sz_bulk to play by client [Kbytes per each interval]
+#750 4
+
+# 750 Kbytes = 6 Mbits ( 2 secs for 3 Mbps)  in server , 
+#4 Kbytes/ 0.01 sec (from line2,secon column)= 3200 Kbits ~= 3 Mbps for playing in client
+
+# line 2: [0] interval (sec)of sending each chunk in server (if it is zero, it sends data when it receives a request from a client), [1]interval (sec) of playing in client 
+# line 3: localport 
+# line 4: zmq port for media buffer
+
+# old line 1: rate of server,   rate of client

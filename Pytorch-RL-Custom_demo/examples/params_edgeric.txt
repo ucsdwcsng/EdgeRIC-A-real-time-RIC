@@ -1,0 +1,27 @@
+3
+0 0
+../rl_model/model_demo.pt
+
+
+
+
+
+# Line 1: algorithm 
+# -1: monitoring, 
+# 0: fixed weights	1: maxCQI	2: Proportional Fairness	3: maxWeight
+# 4: Greedy buffer	5: round robbin	6: norm of CQI / norm of Media Buffer  
+# 7 : PPO eval
+# 20: RL
+
+# Line 2: delay in metrics [msec], delay in weights [msec]
+
+# Line 3: name of a pre-trained rl model file
+../rl_model/model_best_triangular_01062023.pt
+../rl_model/model_best_good_bad_01062023.pt
+../rl_model/model_best_triangular_01062023.pt
+
+../rl_model/model_demo.pt = ../rl_model/model_best_random_Ushasi_02062023.pt
+
+# LIne 4: IP address of REDIS server for receiving a pre-trained PPO model
+192.168.8.230
+if empty, the default PPO model is used.

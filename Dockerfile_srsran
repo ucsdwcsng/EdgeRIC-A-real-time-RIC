@@ -1,0 +1,37 @@
+# ettusresearch/ubuntu-uhd:18.04
+
+# Provides a base Ubuntu (18.04) image with latest UHD installed
+
+#FROM        ubuntu:18.04
+FROM uhd:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+
+RUN apt-get update 
+RUN apt-get -y install -q \
+	iputils-ping \
+	iproute2 \
+	libx11-dev \
+	cmake \
+	libfftw3-dev \
+	libmbedtls-dev \
+	libsctp-dev \
+	libconfig++-dev \
+	net-tools \
+	nano \
+	libtool \
+	pkg-config \
+	software-properties-common \
+	build-essential \
+	libboost-program-options-dev 
+	
+RUN git clone https://github.com/srsRAN/srsRAN_4G.git
+RUN mkdir -p srsRAN_4G/build
+WORKDIR "/srsRAN_4G/build"
+RUN cmake ../
+RUN make
+RUN make install
+RUN srsran_install_configs.sh user
+
+

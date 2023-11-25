@@ -1,0 +1,59 @@
+defaults:
+  - _self_
+
+exp:
+  name: "unnamed"
+
+algorithm: "PPO"
+
+env: "EdgeRIC"
+
+env_config:
+  seed: -1 # No seed
+  T: 1000
+  num_RBGs: 17 # Modify according to MHz of operation?
+  num_UEs: 2
+  backlog_population: 
+    - [0.8, 3750] # Prob_new_chunk,chunk_size - UE1
+    - [0.8, 3750] # Prob_new_chunk,chunk_size - UE2
+
+  cqi_trace: "stream_rl/envs/cqi_traces/data.csv" # Trace for 2 UEs
+  reward: "throughput"
+  # cqi_map: {
+  #           1 : 0.4432,
+  #           2 : 0.2344,
+  #           3 : 0.3770,
+  #           4 : 0.6016,
+  #           5 : 0.8770,
+  #           6 : 1.1758,
+  #           7 : 1.4766,
+  #           8 : 1.9141,
+  #           9 : 2.4063,
+  #           10 : 2.7305,
+  #           11 : 3.3223,
+  #           12 : 3.9023,
+  #           13 : 4.5234,
+  #           14 : 5.1152,
+  #           15 : 5.5547,
+  #           }
+  base_station:
+    max_len: 300000
+  cqi_map: {    # [Mean throughput, Std] (Mbps)
+            1 : [0.4432, 0.2206],
+            2 : [0.6394, 0.2047],
+            3 : [0.6990, 0.3575],
+            4 : [0.9112, 0.2882],
+            5 : [1.0014, 0.4647],
+            6 : [1.3261, 0.3873],
+            7 : [1.5028, 0.5879],
+            8 : [1.9077, 0.3314],
+            9 : [2.0347, 0.3120],
+            10 : [2.0542, 0.3142],
+            11 : [2.0479, 0.3019],
+            12 : [2.0517, 0.3086],
+            13 : [2.0303, 0.3170],
+            14 : [2.0239, 0.3053],
+            15 : [2.0477, 0.2942],
+            }
+    
+  

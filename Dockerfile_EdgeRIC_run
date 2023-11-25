@@ -1,0 +1,25 @@
+FROM edgeric_base:latest
+
+
+#RUN apt-get update
+
+
+
+#3. Copy Code (Cur Dir to Container)
+#RUN mkdir -p git/4G_EdgeRIC
+WORKDIR "/home/afc/git/4G_EdgeRIC_uhd"
+COPY . .
+
+WORKDIR "/home/afc/git/4G_EdgeRIC_uhd/srsran/build"
+RUN make -j 10
+
+WORKDIR "/home/afc/git/4G_EdgeRIC_uhd/"
+
+
+
+#USER ubuntu
+
+
+#CMD export LIBGL_ALWAYS_INDIRECT=1
+
+

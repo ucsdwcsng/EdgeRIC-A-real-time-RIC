@@ -1,0 +1,30 @@
+#                                                                                           
+# .csv to store UE's information in HSS                                                     
+# Kept in the following format: "Name,Auth,IMSI,Key,OP_Type,OP/OPc,AMF,SQN,QCI,IP_alloc"  
+#                                                                                           
+# Name:     Human readable name to help distinguish UE's. Ignored by the HSS                
+# Auth:     Authentication algorithm used by the UE. Valid algorithms are XOR               
+#           (xor) and MILENAGE (mil)                                                        
+# IMSI:     UE's IMSI value                                                                 
+# Key:      UE's key, where other keys are derived from. Stored in hexadecimal              
+# OP_Type:  Operator's code type, either OP or OPc                                          
+# OP/OPc:   Operator Code/Cyphered Operator Code, stored in hexadecimal                     
+# AMF:      Authentication management field, stored in hexadecimal                          
+# SQN:      UE's Sequence number for freshness of the authentication                        
+# QCI:      QoS Class Identifier for the UE's default bearer.                               
+# IP_alloc: IP allocation stratagy for the SPGW.                                            
+#           With 'dynamic' the SPGW will automatically allocate IPs                         
+#           With a valid IPv4 (e.g. '172.16.0.2') the UE will have a statically assigned IP.
+#                                                                                           
+# Note: Lines starting by '#' are ignored and will be overwritten                           
+ue1,xor,001010123456780,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,1001,000000001847,7,172.16.0.2
+ue2,mil,001010123456781,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,2001,0000000016fb,7,172.16.0.3
+ue3,xor,001010123456782,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,3001,00000000154d,7,172.16.0.4
+ue4,mil,001010123456783,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,4001,0000000013e1,7,172.16.0.5
+ue5,xor,001010123456784,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,5001,000000001391,7,172.16.0.6
+ue6,mil,001010123456785,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,6001,000000001371,7,172.16.0.7
+ue7,xor,001010123456786,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,7001,000000001392,7,172.16.0.8
+ue8,mil,001010123456787,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,8001,000000001372,7,172.16.0.9
+ue9,xor,001010123456788,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,9000,000000001393,7,172.16.0.10
+ue10,mil,001010123456789,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,9001,000000001373,7,172.16.0.11
+                       

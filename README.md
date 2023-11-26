@@ -2,8 +2,8 @@
 
 This is a Docker container version of EdgeRIC. There are several script files to build an image to run a Docker container of srsRAN-EdgeRIC including UHD and dependent packages. Inside the container, srsRAN and real-time RIC are executed. This branch can be used for an emulation or an over-the-air experiment for two UEs.
 
-## A. Installing Docker Desktop (Ubuntu).
-### 1. Set up Docker's apt repository.
+##  A. Installing Docker Desktop (Ubuntu).
+###   A-1. Set up Docker's apt repository.
 ```bash
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -19,37 +19,37 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 ```
-### 2. Install the Docker packages.
+###   A-2. Install the Docker packages.
 ```bash
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
-### 3. Verify that the Docker Engine installation is successful by running the hello-world image.
+###   A-3. Verify that the Docker Engine installation is successful by running the hello-world image.
 ```bash
 sudo docker run hello-world
 ```
 
-## B. Cloning a branch of srsRAN_Workshop_demo of EdgeRIC project.
+##  B. Cloning a branch of srsRAN_Workshop_demo of EdgeRIC project.
 ```bash  
 git clone https://github.com/ushasigh/EdgeRIC-A-real-time-RIC  
 git checkout -b srsRAN_Workshop_demo 
 ```
 
-## C. Building a Docker image of RT EdgeRIC.
-### 1. Building a Docker image of UHD.
+##  C. Building a Docker image of RT EdgeRIC.
+###   C-1. Building a Docker image of UHD.
 ```bash
 ./dockerbuild_uhd.sh
 ```
-### 2. Building a Docker image of RT EdgeRIC from UHD image.
+###   C-2. Building a Docker image of RT EdgeRIC from UHD image.
 ```bash
 ./dockerbuild_edgeric.sh
 ```
 
-## D. Running an RT EdgeRIC container.
+##  D. Running an RT EdgeRIC container.
 ```bash
 ./dockerrun_edgeric.sh host 0
 ```
 
-### 1. Emulation of downlink resource allocation for two UEs. (Inside the container on one machine)
+###   D-1. Emulation of downlink resource allocation for two UEs. (Inside the container on one machine)
 #### Terminal 1: Add namespace ue1 and ue2, and run GNU-Radio
 ```bash
 ./dockerexec_edgeric.sh 0
@@ -57,7 +57,7 @@ git checkout -b srsRAN_Workshop_demo
 Once it is inside the container, start a GNU-Radio
 ```bash
 ./netns_setup.sh
- ./run_gnuradio.sh
+./run_gnuradio.sh
 ```
 #### Terminal 2: RUN EPC, eNB, UE1 and UE2
 ```bash
@@ -68,9 +68,9 @@ Once it is inside the container, start a srsRAN
 cd srsran
 ./run_srsran.sh
 ```
-Once all UEs are successfully connected to eNB, start iperf test by following the below.
+Once all UEs are successfully connected to eNB, start iperf test by following the steps below.
 
-#### Terminal 3: RUN iperf Server at UE1
+#### Terminal 3: RUN iperf Server on namespace ue1
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -78,7 +78,7 @@ Once it is inside the container, start a iperf server
 ```bash
 ./iperf_server_ue1_netns.sh
 ```
-#### Terminal 4: RUN iperf Client at eNB
+#### Terminal 4: RUN iperf Client for ue1 at eNB
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -86,7 +86,7 @@ Once it is inside the container, start a iperf client
 ```bash
 ./iperf_client_ue1.sh
 ```
-#### Terminal 5: RUN iperf Server at UE2
+#### Terminal 5: RUN iperf Server on namespace ue2
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -94,7 +94,7 @@ Once it is inside the container, start a iperf server
 ```bash
 ./iperf_server_ue2_netns.sh
 ```
-#### Terminal 6: RUN iperf Client at eNB
+#### Terminal 6: RUN iperf Client for ue2  at eNB
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -127,7 +127,7 @@ Once the parameter file is updated,  start an RT EdgeRIC
 ```
 
 
-### 2. Over-the-air experiment of downlink resource allocation for two UEs. (Inside the containers on three machines)
+###   D-2. Over-the-air experiment of downlink resource allocation for two UEs. (Inside the containers on three machines)
 Before running a Docker container, connect an USRP to each machine.
 
 #### Machine 1: Run EPC, eNB

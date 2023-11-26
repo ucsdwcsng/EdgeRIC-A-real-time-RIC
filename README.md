@@ -1,4 +1,4 @@
-# RT EdgeRIC
+![image](https://github.com/ushasigh/EdgeRIC-A-real-time-RIC/assets/149583758/88df5bc3-635b-4864-bb2a-d0682b3696c5)# RT EdgeRIC
 
 This is a Docker container version of EdgeRIC. There are several script files to build an image to run a Docker container of srsRAN-EdgeRIC including UHD and dependent packages. Inside the container, srsRAN and real-time RIC are executed. This branch can be used for an emulation for two UEs or an over-the-air experiment.
 
@@ -49,14 +49,14 @@ git checkout -b srsRAN_Workshop_demo
 ./dockerrun_edgeric.sh host 0
 ```
 
-
-### 1. Emulation of downlink resource allocation for two UEs. (Inside the container)
-#### Terminal 1: Run GNU-Radio
+### 1. Emulation of downlink resource allocation for two UEs. (Inside the container on one machine)
+#### Terminal 1: Add namespace ue1 and ue1, and run GNU-Radio
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
 Once it is inside the container, start a GNU-Radio
 ```bash
+./netns_setup.sh
  ./run_gnuradio.sh
 ```
 #### Terminal 2: RUN EPC, eNB, UE1 and UE2
@@ -76,15 +76,15 @@ Once all UEs are successfully connected to eNB, start iperf test by following th
 ```
 Once it is inside the container, start a iperf server
 ```bash
-./iperf_server_ue1.sh
+./iperf_server_ue1_netns.sh
 ```
-#### Terminal 4: RUN iperf Client at UE1
+#### Terminal 4: RUN iperf Client at eNB
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
 Once it is inside the container, start a iperf client
 ```bash
-./iperf_server_ue1.sh
+./iperf_client_ue1.sh
 ```
 #### Terminal 5: RUN iperf Server at UE2
 ```bash
@@ -92,15 +92,15 @@ Once it is inside the container, start a iperf client
 ```
 Once it is inside the container, start a iperf server
 ```bash
-./iperf_server_ue2.sh
+./iperf_server_ue2_netns.sh
 ```
-#### Terminal 6: RUN iperf Client at UE2
+#### Terminal 6: RUN iperf Client at eNB
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
 Once it is inside the container, start a iperf client
 ```bash
-./iperf_server_ue2.sh
+./iperf_client_ue2.sh
 ```
 When all UEs receive data, start a logging agent to visualize the total throughput of downlinks.
 #### Terminal 7: RUN Logging Agent
@@ -116,7 +116,7 @@ cd PyTorch-RL-Custom-demo
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
-Once it is inside the container, open a RIC parametr file and select an algorithm for real-time resource allocation. 
+Once it is inside the container, open a RIC parameter file and select an algorithm for real-time resource allocation. 
 ```bash
 cd PyTorch-RL-Custom-demo
 nano examples/params_edgeric.txt
@@ -126,3 +126,126 @@ Once the parameter file is updated,  start an RT EdgeRIC
  ./run_rl.sh 1000 1
 ```
 
+
+### 2. Over-the-air experiment of downlink resource allocation for two UEs. (Inside the containers on three machines)
+Before running a Docker container, connect an USRP to each machine.
+
+#### Machine 1: Run EPC, eNB
+##### Terminal 1: 
+```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start a EPC 
+```bash
+cd srsran
+ ./epc.sh
+```
+##### Terminal 2: 
+```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start an eNB
+```bash
+cd srsran
+ ./enb_usrp.sh
+```
+#### Machine 2: RUN UE1
+##### Terminal 1: Build an image of vanilla version of srsRAN with additional packages
+```bash
+./dockerbuild_uhd_srsran.sh
+./dockerbuild_uhd_srsran_packages.sh
+```
+Once the image is built, run a container of srsRAN 
+```bash
+./dockerrun_uhd_srsran.sh
+
+```
+Once it is inside the container, start UE as UE1
+```bash
+ cd build
+ ./srsue/src/srsue
+```
+#### Machine 3: RUN UE2
+##### Terminal 1: Build an image of vanilla version of srsRAN with additional packages
+```bash
+./dockerbuild_uhd_srsran.sh
+./dockerbuild_uhd_srsran_packages.sh
+```
+Once the image is built, run a container of srsRAN 
+```bash
+./dockerrun_uhd_srsran.sh
+
+```
+Once it is inside the container, change imsi in /root/.config/srsran/ue.conf
+```bash
+nano /root/.config/srsran/ue.conf
+```
+Set the value of imsi (line 144) as 001010123456781 and save the file. 
+Then, start UE as UE2
+```bash
+ cd build
+ ./srsue/src/srsue
+```
+
+
+Once all UEs are successfully connected to eNB, start iperf test by following the below.
+
+#### Machine 2 (UE1)
+##### Terminal 2: RUN iperf Server 
+```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start a iperf server
+```bash
+iperf -s
+```
+#### Machine 1 (EPC, eNB)
+##### Terminal 3: RUN iperf Client 
+```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start a iperf client
+```bash
+./iperf_client_ue1.sh
+```
+#### Machine 3 (UE2)
+##### Terminal 2: RUN iperf Server
+```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start a iperf server
+```bash
+iperf -s
+```
+#### Machine 1 (EPC, eNB)
+##### Terminal 4: RUN iperf Client
+```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start a iperf client
+```bash
+./iperf_client_ue2.sh
+```
+When all UEs receive data, start a logging agent to visualize the total throughput of downlinks.
+##### Terminal 5: RUN Logging Agent
+```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start a logging agent
+```bash
+cd PyTorch-RL-Custom-demo
+ ./run_logging.sh
+```
+##### Terminal 6: RUN RT EdgeRIC
+```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, open a RIC parameter file and select an algorithm for real-time resource allocation. 
+```bash
+cd PyTorch-RL-Custom-demo
+nano examples/params_edgeric.txt
+```
+Once the parameter file is updated,  start an RT EdgeRIC
+```bash
+ ./run_rl.sh 1000 1
+```

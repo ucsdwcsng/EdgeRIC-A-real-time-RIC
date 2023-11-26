@@ -130,8 +130,7 @@ Once the parameter file is updated,  start an RT EdgeRIC
 ###   D-2. Over-the-air experiment of downlink resource allocation for two UEs. (Inside the containers on three machines)
 Before running a Docker container, connect an USRP to each machine.
 
-#### Machine 1: Run EPC, eNB
-##### Terminal 1: 
+#### Machine 1 - Terminal 1:  Run EPC
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -140,7 +139,7 @@ Once it is inside the container, start a EPC
 cd srsran
  ./epc.sh
 ```
-##### Terminal 2: 
+#### Machine 1 - Terminal 2:  Run eNB
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -149,8 +148,7 @@ Once it is inside the container, start an eNB
 cd srsran
  ./enb_usrp.sh
 ```
-#### Machine 2: RUN UE1
-##### Terminal 1: Build an image of vanilla version of srsRAN with additional packages
+#### Machine 2 - Terminal 1: Build an image of vanilla version of srsRAN with additional packages to run UE1
 ```bash
 ./dockerbuild_uhd_srsran.sh
 ./dockerbuild_uhd_srsran_packages.sh
@@ -165,8 +163,7 @@ Once it is inside the container, start UE as UE1
  cd build
  ./srsue/src/srsue
 ```
-#### Machine 3: RUN UE2
-##### Terminal 1: Build an image of vanilla version of srsRAN with additional packages
+#### Machine 3 - Terminal 1: Build an image of vanilla version of srsRAN with additional packages to run UE2
 ```bash
 ./dockerbuild_uhd_srsran.sh
 ./dockerbuild_uhd_srsran_packages.sh
@@ -190,8 +187,7 @@ Then, start UE as UE2
 
 Once all UEs are successfully connected to eNB, start iperf test by following the below.
 
-#### Machine 2 (UE1)
-##### Terminal 2: RUN iperf Server 
+#### Machine 2 (UE1) - Terminal 2: RUN iperf Server 
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -199,8 +195,7 @@ Once it is inside the container, start a iperf server
 ```bash
 iperf -s
 ```
-#### Machine 1 (EPC, eNB)
-##### Terminal 3: RUN iperf Client 
+#### Machine 1 (EPC, eNB) - Terminal 3: RUN iperf Client 
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -212,8 +207,7 @@ If there is an issue with the connection iperf, disable a firewall on Machine 2 
 ```bash
 sudo systemctl stop firewalld
 ```
-#### Machine 3 (UE2)
-##### Terminal 2: RUN iperf Server
+#### Machine 3 (UE2) - Terminal 2: RUN iperf Server
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -221,8 +215,7 @@ Once it is inside the container, start a iperf server
 ```bash
 iperf -s
 ```
-#### Machine 1 (EPC, eNB)
-##### Terminal 4: RUN iperf Client
+#### Machine 1 (EPC, eNB) - Terminal 4: RUN iperf Client
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -235,7 +228,7 @@ If there is an issue with the connection iperf, disable a firewall on Machine 3 
 sudo systemctl stop firewalld
 ```
 When all UEs receive data, start a logging agent to visualize the total throughput of downlinks.
-##### Terminal 5: RUN Logging Agent
+#### Machine 1 (EPC, eNB) - Terminal 5: RUN Logging Agent
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -244,7 +237,7 @@ Once it is inside the container, start a logging agent
 cd PyTorch-RL-Custom-demo
  ./run_logging.sh
 ```
-##### Terminal 6: RUN RT EdgeRIC
+#### Machine 1 (EPC, eNB) - Terminal 6: RUN RT EdgeRIC
 ```bash
 ./dockerexec_edgeric.sh 0
 ```

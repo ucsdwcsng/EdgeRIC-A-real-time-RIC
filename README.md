@@ -1,4 +1,4 @@
-![image](https://github.com/ushasigh/EdgeRIC-A-real-time-RIC/assets/149583758/88df5bc3-635b-4864-bb2a-d0682b3696c5)# RT EdgeRIC
+# RT EdgeRIC
 
 This is a Docker container version of EdgeRIC. There are several script files to build an image to run a Docker container of srsRAN-EdgeRIC including UHD and dependent packages. Inside the container, srsRAN and real-time RIC are executed. This branch can be used for an emulation for two UEs or an over-the-air experiment.
 

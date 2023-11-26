@@ -118,4 +118,3 @@ Once the parameter file is updated,  start an RT EdgeRIC
 ```bash
  ./run_rl.sh 1000 1
 ```
-![image](https://github.com/ushasigh/EdgeRIC-A-real-time-RIC/assets/149583758/1c18631c-9cc0-4bb7-9b1e-c9f7c5882fa4)

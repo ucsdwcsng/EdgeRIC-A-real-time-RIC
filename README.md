@@ -208,6 +208,10 @@ Once it is inside the container, start a iperf client
 ```bash
 ./iperf_client_ue1.sh
 ```
+If there is an issue with the connection iperf, disable a firewall on Machine 2 and restart the iperf.
+```bash
+sudo systemctl stop firewalld
+```
 #### Machine 3 (UE2)
 ##### Terminal 2: RUN iperf Server
 ```bash
@@ -225,6 +229,10 @@ iperf -s
 Once it is inside the container, start a iperf client
 ```bash
 ./iperf_client_ue2.sh
+```
+If there is an issue with the connection iperf, disable a firewall on Machine 3 and restart the iperf.
+```bash
+sudo systemctl stop firewalld
 ```
 When all UEs receive data, start a logging agent to visualize the total throughput of downlinks.
 ##### Terminal 5: RUN Logging Agent

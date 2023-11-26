@@ -2,7 +2,7 @@
 
 This is a Docker container version of EdgeRIC. There are several script files to build an image to run a Docker container of srsRAN-EdgeRIC including UHD and dependent packages. Inside the container, srsRAN and real-time RIC are executed. This branch can be used for an emulation or an over-the-air experiment for two UEs.
 
-## Installing Docker Desktop (Ubuntu).
+## A. Installing Docker Desktop (Ubuntu).
 ### 1. Set up Docker's apt repository.
 ```bash
 # Add Docker's official GPG key:
@@ -28,13 +28,13 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo docker run hello-world
 ```
 
-## Cloning a branch of srsRAN_Workshop_demo of EdgeRIC project.
+## B. Cloning a branch of srsRAN_Workshop_demo of EdgeRIC project.
 ```bash  
 git clone https://github.com/ushasigh/EdgeRIC-A-real-time-RIC  
 git checkout -b srsRAN_Workshop_demo 
 ```
 
-## Building a Docker image of RT EdgeRIC.
+## C. Building a Docker image of RT EdgeRIC.
 ### 1. Building a Docker image of UHD.
 ```bash
 ./dockerbuild_uhd.sh
@@ -44,7 +44,7 @@ git checkout -b srsRAN_Workshop_demo
 ./dockerbuild_edgeric.sh
 ```
 
-## Running an RT EdgeRIC container.
+## D. Running an RT EdgeRIC container.
 ```bash
 ./dockerrun_edgeric.sh host 0
 ```

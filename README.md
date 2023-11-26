@@ -53,11 +53,18 @@ git checkout -b srsRAN_Workshop_demo
 ### 1. Emulation of downlink resource allocation for two UEs. (Inside the container)
 #### Terminal 1: Run GNU-Radio
 ```bash
+./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start a GNU-Radio
+```bash
  ./run_gnuradio.sh
 ```
 #### Terminal 2: RUN EPC, eNB, UE1 and UE2
 ```bash
 ./dockerexec_edgeric.sh 0
+```
+Once it is inside the container, start a srsRAN
+```bash
 cd srsran
 ./run_srsran.sh
 ```
@@ -119,71 +126,3 @@ Once the parameter file is updated,  start an RT EdgeRIC
  ./run_rl.sh 1000 1
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-cd ../../EdgeRIC_main_ue2  
-mkdir build  
-cd build  
-cmake ../  
-make  
-cd ../../EdgeRIC_main_ue3  
-mkdir build  
-cd build  
-cmake ../  
-make  
-cd ../../EdgeRIC_main_ue4
-mkdir build
-cd build  
-cmake ../  
-make  
-```
-## Setup the 5G network
-Depending on the number of UEs {i}, follow the steps:
-### Start the network
-Terminal 1:  
-```bash
-cd EdgeRIC_main
-./top_block_{i}ue_23.04MHz.py
-```
-
-Terminal 2:  
-```bash
-cd EdgeRIC_main
-./run_srsran_{i}ues.sh
-```
-
-### Starting iperf tarffic 
-Terminal 3:  
-```bash
-cd EdgeRIC_main
-./iperf_server_{i}ues.sh
-```
-Terminal 4:  
-```bash
-cd EdgeRIC_main
-./iperf_client_{i}ues.sh <rate_ue{i}> <duration>, eg: ./iperf_client_2ues.sh 10M 10M 1000
-```
-
-## Run the Real Time RIC
-Terminal 5:  
-
-To inititate default scheduling (Max Weight):  
-```bash
-cd real_time_RIC  
-./run_defaultscheduling.sh <{i}>, eg: ./run_deafultscheduling.sh 2 for 2 UEs    
-```
-
-To initiate training for RL agent:  
-```bash
-cd real_time_RIC  
-./run_ppo.sh   
-```

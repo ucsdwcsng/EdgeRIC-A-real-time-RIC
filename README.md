@@ -50,7 +50,7 @@ git checkout -b srsRAN_Workshop_demo
 ```
 
 ### 1. Emulation of downlink resource allocation for two UEs. (Inside the container on one machine)
-#### Terminal 1: Add namespace ue1 and ue1, and run GNU-Radio
+#### Terminal 1: Add namespace ue1 and ue2, and run GNU-Radio
 ```bash
 ./dockerexec_edgeric.sh 0
 ```

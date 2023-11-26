@@ -1,6 +1,6 @@
 # RT EdgeRIC
 
-This is a Docker container version of EdgeRIC. There are several script files to build an image to run a Docker container of srsRAN-EdgeRIC including UHD and dependent packages. Inside the container, srsRAN and real-time RIC are executed. This branch can be used for an emulation for two UEs or an over-the-air experiment.
+This is a Docker container version of EdgeRIC. There are several script files to build an image to run a Docker container of srsRAN-EdgeRIC including UHD and dependent packages. Inside the container, srsRAN and real-time RIC are executed. This branch can be used for an emulation or an over-the-air experiment for two UEs.
 
 ## Installing Docker Desktop (Ubuntu).
 ### 1. Set up Docker's apt repository.

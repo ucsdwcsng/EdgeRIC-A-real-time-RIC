@@ -148,7 +148,7 @@ Once it is inside the container, start an eNB
 cd srsran
  ./enb_usrp.sh
 ```
-#### Machine 2 - Terminal 1: Build an image of vanilla version of srsRAN with additional packages to run UE1
+#### Machine 2 - Terminal 1: Build an image of vanilla version of srsRAN with additional packages and run UE1
 ```bash
 ./dockerbuild_uhd_srsran.sh
 ./dockerbuild_uhd_srsran_packages.sh
@@ -163,7 +163,7 @@ Once it is inside the container, start UE as UE1
  cd build
  ./srsue/src/srsue
 ```
-#### Machine 3 - Terminal 1: Build an image of vanilla version of srsRAN with additional packages to run UE2
+#### Machine 3 - Terminal 1: Build an image of vanilla version of srsRAN with additional packages and run UE2
 ```bash
 ./dockerbuild_uhd_srsran.sh
 ./dockerbuild_uhd_srsran_packages.sh
@@ -185,7 +185,7 @@ Then, start UE as UE2
 ```
 
 
-Once all UEs are successfully connected to eNB, start iperf test by following the below.
+Once all UEs are successfully connected to eNB, start iperf test by following the steps below.
 
 #### Machine 2 (UE1) - Terminal 2: RUN iperf Server 
 ```bash
@@ -195,7 +195,7 @@ Once it is inside the container, start a iperf server
 ```bash
 iperf -s
 ```
-#### Machine 1 (EPC, eNB) - Terminal 3: RUN iperf Client 
+#### Machine 1 (EPC, eNB) - Terminal 3: RUN iperf Client for UE1
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -203,7 +203,7 @@ Once it is inside the container, start a iperf client
 ```bash
 ./iperf_client_ue1.sh
 ```
-If there is an issue with the connection iperf, disable a firewall on Machine 2 and restart the iperf.
+If there is an issue with the iperf connection, disable a firewall on Machine 2 and restart the iperf server and client.
 ```bash
 sudo systemctl stop firewalld
 ```
@@ -215,7 +215,7 @@ Once it is inside the container, start a iperf server
 ```bash
 iperf -s
 ```
-#### Machine 1 (EPC, eNB) - Terminal 4: RUN iperf Client
+#### Machine 1 (EPC, eNB) - Terminal 4: RUN iperf Client for UE2
 ```bash
 ./dockerexec_edgeric.sh 0
 ```
@@ -223,12 +223,12 @@ Once it is inside the container, start a iperf client
 ```bash
 ./iperf_client_ue2.sh
 ```
-If there is an issue with the connection iperf, disable a firewall on Machine 3 and restart the iperf.
+If there is an issue with the iperf connection, disable a firewall on Machine 3 and restart the iperf server and client.
 ```bash
 sudo systemctl stop firewalld
 ```
 When all UEs receive data, start a logging agent to visualize the total throughput of downlinks.
-#### Machine 1 (EPC, eNB) - Terminal 5: RUN Logging Agent
+#### Machine 1 (EPC, eNB) - Terminal 5: RUN Logging Agent 
 ```bash
 ./dockerexec_edgeric.sh 0
 ```

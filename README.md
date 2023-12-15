@@ -45,9 +45,18 @@ cd build
 cmake ../  
 make  
 ```
+
+
 ## Setup the 5G network
-Depending on the number of UEs {i}, follow the steps:
+### Updating the config files on your system
+Update the directory in files ./config/srsran/enb.conf and ./config/srsran/epc.conf  
+
+
+    
+
 ### Start the network
+Depending on the number of UEs {i}, follow the steps:  
+
 Terminal 1:  
 ```bash
 cd EdgeRIC_main

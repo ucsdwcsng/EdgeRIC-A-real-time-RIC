@@ -21,6 +21,10 @@ sudo make install
 sudo ldconfig  
 ```
 
+### Other Packages
+```bash
+sudo apt-get install cmake make gcc g++ pkg-config libfftw3-dev libmbedtls-dev libsctp-dev libyaml-cpp-dev libgtest-dev
+```
 ### Install srsRAN supporting EdgeRIC messages and control
 ```bash  
 git clone https://github.com/ushasigh/EdgeRIC-A-real-time-RIC  

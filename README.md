@@ -52,10 +52,10 @@ make
 Update the directory in files ./config/srsran/enb.conf and ./config/srsran/epc.conf  
 
 
-    
+Depending on the number of UEs {i}, follow the steps:      
 
 ### Start the network
-Depending on the number of UEs {i}, follow the steps:  
+
 
 Terminal 1:  
 ```bash

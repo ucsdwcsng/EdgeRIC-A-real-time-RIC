@@ -63,6 +63,9 @@ Update the directory in files ./config/srsran/enb.conf and ./config/srsran/epc.c
 
 
 Depending on the number of UEs {i}, follow the steps:      
+### Updating Channel Traces
+
+use params.txt to do so [TODO]
 
 ### Start the network
 
@@ -79,8 +82,8 @@ cd EdgeRIC_main
 ./run_srsran_{i}ues.sh
 ```
 
-### Starting tarffic 
+## Starting tarffic 
 visit /traffic-generator
 
-## Run the Real Time RIC
+## Run EdgeRIC
 visit /real_time_RIC

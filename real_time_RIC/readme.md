@@ -16,8 +16,8 @@ edgeric_agent
 ├── /muApp2           # training an RL agent to compute downlink scheduling policy
     ├── muApp2_train_RL_DL_scheduling.py
 ├── /muApp3           # training an RL agent to compute downlink scheduling policy
-    ├── metrics_monitor_aggregate.py
-    ├── metrics_monitor_perUE.py
+    ├── metrics_monitor_aggregate.py # launch dashboard for aggregate statistics
+    ├── metrics_monitor_perUE.py     # launch dashboard for per UE metrics
 
 ```
 

@@ -3,3 +3,7 @@ EdgeRIC_main_ue2/build
 EdgeRIC_main_ue3/build
 EdgeRIC_main_ue4/build
 real_time_RIC/runRL/outputs
+real_time_RIC/muApp2/outputs
+real_time_RIC/dashboard_perUE_v2.py
+real_time_RIC/edgeric_2.py
+real_time_RIC/param_edgeric.txt

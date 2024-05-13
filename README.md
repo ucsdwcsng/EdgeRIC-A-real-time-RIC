@@ -1,5 +1,10 @@
 # EdgeRIC
-## Installing srsRAN-EdgeRIC
+This repository currently contains the codebase built with the srsRAN-4G Project. We will update this repository with the srsRAN-5G Project shortly!
+
+Refer to full paper: https://www.usenix.org/system/files/nsdi24-ko.pdf
+Refer to EdgeRIC documentation: https://edgeric.github.io/
+
+## Installing srsRAN with EdgeRIC hooks
 ### Install zmq
 ```bash  
 git clone https://github.com/zeromq/libzmq.git  
@@ -73,7 +78,7 @@ cd EdgeRIC_main
 ./run_srsran_{i}ues.sh
 ```
 
-### Starting iperf tarffic 
+### Starting tarffic 
 visit /traffic-generator
 
 ## Run the Real Time RIC

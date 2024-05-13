@@ -37,7 +37,8 @@ public:
   sched_time_pf(const sched_cell_params_t& cell_params_, const sched_interface::sched_args_t& sched_args);
   //void sched_dl_users(sched_ue_list& ue_db, sf_sched* tti_sched) override;
   void sched_dl_users(sched_ue_list& ue_db, sf_sched* tti_sched, std::map<uint16_t, float>& weights_recved) override;
-  void sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched) override;
+  void sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched, uint8_t& a, uint8_t& b, std::map<uint16_t, uint32_t>& pending_data_ul) override;
+ 
 
 private:
   void new_tti(sched_ue_list& ue_db, sf_sched* tti_sched);

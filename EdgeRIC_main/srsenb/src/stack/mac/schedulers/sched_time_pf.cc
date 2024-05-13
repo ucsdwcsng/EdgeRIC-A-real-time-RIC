@@ -20,9 +20,11 @@
  */
 
 #include "srsenb/hdr/stack/mac/schedulers/sched_time_pf.h"
+#include "srsenb/hdr/stack/mac/sched_grid.h"
 #include <vector>
 #include <sys/time.h>
-
+#include <fstream>
+std::map<uint16_t, uint32_t> pending_data_ul_local; 
 
 namespace srsenb {
 
@@ -269,9 +271,102 @@ uint32_t sched_time_pf::try_dl_alloc(ue_ctxt& ue_ctxt, sched_ue& ue, sf_sched* t
 /*****************************************************************
  *                         Uplink
  *****************************************************************/
+int cnt_ul =0 ;
+int wgt_cnt_ul = 0;
+int tti_count = 0;
 
-void sched_time_pf::sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched)
+std::map<uint16_t, uint16_t> rbg_alloc_ul ; 
+
+void sched_time_pf::sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched, uint8_t& a, uint8_t& b, std::map<uint16_t, uint32_t>& pending_data_ul)
 {
+  // ushasi
+  uint8_t num_ues = ue_db.size();
+  float* weights = new float[num_ues];
+  uint16_t* rbgs = new uint16_t[num_ues];
+
+  int c = static_cast<int>(a);
+  int d = static_cast<int>(b);
+  
+  //a = 20;
+  //b = 20;
+  //int c = static_cast<size_t>(a);
+  //int d = static_cast<size_t>(b);
+
+  //sf_sched* scheduler;
+  prbmask_t modified_mask = ~(tti_sched->get_ul_mask()); // Assume this is the new mask you want to set
+  
+  size_t bit = c;
+  for (int bit = c; bit <= d; ++bit) {
+    modified_mask.reset(bit);
+} 
+
+  // Step 1: Create a mask with bits 10 through 17 set to 0
+  // prbmask_t clear_mask = ~(((1UL << (17 - 10 + 1)) - 1) << 10);
+
+  // Step 2: Apply the mask using bitwise AND
+  // modified_mask &= clear_mask;
+
+  tti_sched->set_ul_mask(~modified_mask);
+
+  // rbgmask_t current_mask = ~(tti_sched->get_ul_mask());
+
+  //auto ul_mask = tti_sched->get_ul_mask(); // Assume this returns a bounded_bitset<100>
+  prbmask_t current_mask = ~(tti_sched->get_ul_mask()); // Assume this is a bounded_bitset<25>
+  /***
+  // Invert and copy bits manually. Be careful with sizes to avoid out-of-bounds access.
+  for (size_t i = 0; i < current_mask.size(); ++i) {
+      if (i < ul_mask.size()) {
+          current_mask.set(i, !ul_mask.test(i));
+      } else {
+          // Handle cases where current_mask is larger than the size of ul_mask
+          current_mask.set(i, true); // Or false, depending on your logic
+      }
+  }**/
+  
+  uint8_t available_rbgs = 0;
+  int avail = 0;
+  wgt_cnt_ul++;
+  std::string mask_str;
+  for (size_t i = 0; i < current_mask.size(); i++)
+  {
+    if(current_mask.test(i))
+    {
+      available_rbgs++;
+      avail = avail + 1;
+      mask_str.append("1");
+    }
+    else
+    {
+      mask_str.append("0");
+    }
+  }
+
+  std::ofstream log_file("ue_allocations.log", std::ios::app);
+    if (log_file.is_open()) {
+  log_file << "time: " << cnt_ul
+          << " cnt_ul: " << cnt_ul
+          << " Available PRBs: " << avail
+          << " masking is between: " << c << " " << d 
+          << " Current Mask: " << mask_str << '\n';
+       
+  log_file.close(); // Close the file after writing to it
+}
+
+
+
+  if (cnt_ul > 2000){
+    //printf("\n\n"); 
+    cnt_ul = 0 ;
+  }
+  tti_count++;
+  cnt_ul++;
+
+  //
+
+
+
+
+
   srsran::tti_point tti_rx{tti_sched->get_tti_rx()};
   if (current_tti_rx != tti_rx) {
     new_tti(ue_db, tti_sched);
@@ -279,9 +374,22 @@ void sched_time_pf::sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched)
 
   while (not ul_queue.empty()) {
     ue_ctxt& ue = *ul_queue.top();
+    pending_data_ul[ue.rnti] = pending_data_ul_local[ue.rnti];
     ue.save_ul_alloc(try_ul_alloc(ue, *ue_db[ue.rnti], tti_sched), 0.01);
     ul_queue.pop();
   }
+  
+//   std::ofstream log_file_2("pending_data.log", std::ios::app);
+//     if (log_file_2.is_open()) {
+//   log_file_2 << "time: " << tti_count
+//           << " cnt_ul: " << tti_count << '\n';
+//       for (const auto& pair : pending_data_ul) {
+//             log_file_2 << "RNTI: " << pair.first << ", Pending Data: " << pair.second << '\n';
+//         }     
+       
+//   log_file_2.close(); // Close the file after writing to it
+// }
+   
 }
 
 uint32_t sched_time_pf::try_ul_alloc(ue_ctxt& ue_ctxt, sched_ue& ue, sf_sched* tti_sched)
@@ -295,6 +403,7 @@ uint32_t sched_time_pf::try_ul_alloc(ue_ctxt& ue_ctxt, sched_ue& ue, sf_sched* t
     return ue_ctxt.ul_h->get_pending_data();
   }
 
+
   alloc_result code;
   uint32_t     estim_tbs_bytes = 0;
   if (ue_ctxt.ul_h->has_pending_retx()) {
@@ -304,11 +413,76 @@ uint32_t sched_time_pf::try_ul_alloc(ue_ctxt& ue_ctxt, sched_ue& ue, sf_sched* t
     // Note: h->is_empty check is required, in case CA allocated a small UL grant for UCI
     uint32_t pending_data = ue.get_pending_ul_new_data(tti_sched->get_tti_tx_ul(), cc_cfg->enb_cc_idx);
     // Check if there is a empty harq, and data to transmit
+
+    uint16_t rnti = ue_ctxt.rnti;
+    pending_data_ul_local[rnti] = pending_data;
     if (pending_data == 0) {
       return 0;
     }
+
+    std::string mask_str;
+    uint8_t available_rbgs = 0;
+    int avail = 0;
     uint32_t     pending_rb = ue.get_required_prb_ul(cc_cfg->enb_cc_idx, pending_data);
+    //uint32_t pending_rb = 10;
+    prbmask_t current_mask = ~(tti_sched->get_ul_mask()); 
+    for (size_t i = 0; i < current_mask.size(); i++)
+    {
+      if(current_mask.test(i))
+      {
+        available_rbgs++;
+        avail = avail + 1;
+        mask_str.append("1");
+      }
+      else
+      {
+        mask_str.append("0");
+      }
+    }
     prb_interval alloc      = find_contiguous_ul_prbs(pending_rb, tti_sched->get_ul_mask());
+    //prb_interval alloc      = find_contiguous_ul_prbs(pending_rb, current_mask);
+    // if (alloc.empty()) {
+    //   return 0;
+    // }
+    // code            = tti_sched->alloc_ul_user(&ue, alloc); // should chnage this
+
+    // Ushasi 
+    if (cnt_ul >= 0) {
+      std::string s;
+      // Calculate the size of the interval. Assuming stop is exclusive, add 1 to include the start in the count.
+      size_t size = alloc.stop() - alloc.start();
+      for (size_t i = 0; i < size; i++) {
+        // As prb_interval doesn't directly support 'test', we assume all positions within start and stop are '1'.
+        s.append("1");
+      }
+      // Use s as needed...
+
+      struct timeval ctime ; 
+      gettimeofday(&ctime, NULL);
+      long cur_utime = ctime.tv_sec*1000000+ctime.tv_usec;
+
+      // Open a file in append mode to add the new entries
+      std::ofstream log_file("per_ue_allocations.log", std::ios::app);
+      if (log_file.is_open()) {
+      log_file << "time: " << cur_utime 
+              << " cnt_ul: " << cnt_ul
+              << " rnti: " << ue_ctxt.rnti 
+              << " pending_data: " << pending_data 
+              << " pending_rb: " << pending_rb 
+              << "available mask: " << mask_str
+              << " alloc_mask: " << s << std::endl;
+      log_file.close(); // Close the file after writing to it
+    }
+      if (log_file.is_open()) {
+       log_file << "time: " << cur_utime << " rnti: " << ue_ctxt.rnti << " alloc_mask: " << s << std::endl;
+       log_file.close(); // Close the file after writing to it
+      } 
+
+      if(cnt_ul>2000){
+        printf("time: %ld rnti: %d alloc_mask: %s \n",cur_utime,  ue_ctxt.rnti,  s.c_str()); 
+      }       
+    }
+    //
     if (alloc.empty()) {
       return 0;
     }

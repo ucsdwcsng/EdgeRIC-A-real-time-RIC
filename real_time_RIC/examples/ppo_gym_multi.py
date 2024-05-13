@@ -142,8 +142,8 @@ def eval_loop_weight(eval_episodes):
 
         prev_weights = np.zeros(env.numArms)
         
-        avg_CQI_x = 0 ;  
-        avg_CQI_y = 0 ;
+        avg_CQI_x = 0 
+        avg_CQI_y = 0 
         avg_CQIs = np.zeros(env.numArms) 
         
         print("\n\n\n",i_episode, "\n\n\n")

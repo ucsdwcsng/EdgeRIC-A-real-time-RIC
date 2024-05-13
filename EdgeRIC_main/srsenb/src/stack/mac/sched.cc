@@ -31,6 +31,7 @@
 #define Error(fmt, ...) srslog::fetch_basic_logger("MAC").error(fmt, ##__VA_ARGS__)
 
 using srsran::tti_point;
+std::map<uint16_t, uint32_t> pending_data_ul_sched; 
 
 namespace srsenb {
 
@@ -348,12 +349,17 @@ int sched::ul_sched(uint32_t tti, uint32_t enb_cc_idx, srsenb::sched_interface::
   tti_point tti_rx = tti_point{tti} - TX_ENB_DELAY - FDD_HARQ_DELAY_DL_MS;
   new_tti(tti_rx);
 
+  pending_data_ul_sched = pendingdata->send_ul_pending_data();
+
   // copy result
   sched_result = sched_results.get_sf(tti_rx)->get_cc(enb_cc_idx)->ul_sched_result;
 
   return SRSRAN_SUCCESS;
 }
-
+std::map<uint16_t, uint32_t> sched::send_ul_pending_data_from_sched()
+{
+  return pending_data_ul_sched;
+}
 /// Generate scheduling decision for tti_rx, if it wasn't already generated
 /// NOTE: The scheduling decision is made for all CCs in a single call/lock, otherwise the UE can have different
 ///       configurations (e.g. different set of activated SCells) in different CC decisions
@@ -366,7 +372,8 @@ void sched::new_tti(tti_point tti_rx)
     if (not is_generated(tti_rx, cc_idx)) {
       // Generate carrier scheduling result
       //carrier_schedulers[cc_idx]->generate_tti_result(tti_rx);
-      carrier_schedulers[cc_idx]->generate_tti_result(tti_rx, weights);
+      carrier_schedulers[cc_idx]->generate_tti_result(tti_rx, weights, a, b, pending_data_ul);
+      
     }
   }
 }

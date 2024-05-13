@@ -79,7 +79,7 @@ public:
 
   int dl_sched(uint32_t tti, uint32_t enb_cc_idx, dl_sched_res_t& sched_result) final;
   int ul_sched(uint32_t tti, uint32_t enb_cc_idx, ul_sched_res_t& sched_result) final;
-
+  std::map<uint16_t, uint32_t> send_ul_pending_data_from_sched();
   int set_pdcch_order(uint32_t enb_cc_idx, dl_sched_po_info_t pdcch_order_info) final;
 
   /* Custom functions
@@ -91,7 +91,13 @@ public:
   int                                  metrics_read(uint16_t rnti, mac_ue_metrics_t& metrics);
 
   class carrier_sched;
+  //std::map<uint16_t, float> weights;
   std::map<uint16_t, float> weights;
+  uint8_t a;
+  uint8_t b;
+  std::map<uint16_t, uint32_t> pending_data_ul; 
+
+  
 
 protected:
   void new_tti(srsran::tti_point tti_rx);
@@ -109,6 +115,9 @@ protected:
 
   // independent schedulers for each carrier
   std::vector<std::unique_ptr<carrier_sched> > carrier_schedulers;
+  //std::vector<std::unique_ptr<carrier_sched> > pendingdata;
+  std::unique_ptr<carrier_sched> pendingdata;
+  
 
   // Storage of past scheduling results
   sched_result_ringbuffer sched_results;

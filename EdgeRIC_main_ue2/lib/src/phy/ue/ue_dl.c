@@ -152,7 +152,7 @@ int srsran_ue_dl_init(srsran_ue_dl_t* q, cf_t* in_buffer[SRSRAN_MAX_PORTS], uint
   int idx = 0;
   int cqi_c = 0 ;  
   
-  fp_cqi = fopen("../cqis/ota_1.txt", "r"); 
+  fp_cqi = fopen("../cqis/drone_2.txt", "r"); 
   
   for (int i = 0; i < __sz_cqis ; i++) {
     fscanf(fp_cqi, "%d", &cqi_c) ; 

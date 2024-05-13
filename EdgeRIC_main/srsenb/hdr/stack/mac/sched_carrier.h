@@ -44,9 +44,10 @@ public:
   void                   carrier_cfg(const sched_cell_params_t& sched_params_);
   void                   set_dl_tti_mask(uint8_t* tti_mask, uint32_t nof_sfs);
   //const cc_sched_result& generate_tti_result(srsran::tti_point tti_rx);
-  const cc_sched_result& generate_tti_result(srsran::tti_point tti_rx, std::map<uint16_t, float>& weights);
+  const cc_sched_result& generate_tti_result(srsran::tti_point tti_rx, std::map<uint16_t, float>& weights, uint8_t& a, uint8_t& b, std::map<uint16_t, uint32_t>& pending_data_ul);
   int                    dl_rach_info(dl_sched_rar_info_t rar_info);
   int                    pdcch_order_info(dl_sched_po_info_t pdcch_order_info);
+  std::map<uint16_t, uint32_t> send_ul_pending_data();
 
   // getters
   const ra_sched* get_ra_sched() const { return ra_sched_ptr.get(); }
@@ -54,6 +55,9 @@ public:
   const sf_sched_result* get_sf_result(tti_point tti_rx) const;
 
   std::map<uint16_t, float> weights;
+  uint8_t a;
+  uint8_t b;
+  std::map<uint16_t, uint32_t> pending_data_ul; 
 
 private:
   //! Compute DL scheduler result for given TTI

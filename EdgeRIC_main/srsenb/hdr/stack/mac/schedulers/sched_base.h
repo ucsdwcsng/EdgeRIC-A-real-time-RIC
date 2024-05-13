@@ -37,9 +37,7 @@ public:
 
   //virtual void sched_dl_users(sched_ue_list& ue_db, sf_sched* tti_sched) = 0;
   virtual void sched_dl_users(sched_ue_list& ue_db, sf_sched* tti_sched, std::map<uint16_t, float>& weights_recved) = 0;
-  virtual void sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched) = 0;
-
-    //std::map<uint16_t, float> weights;
+  virtual void sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched, uint8_t& a, uint8_t& b, std::map<uint16_t, uint32_t>& pending_data_ul) = 0;
 
 protected:
   srslog::basic_logger& logger = srslog::fetch_basic_logger("MAC");

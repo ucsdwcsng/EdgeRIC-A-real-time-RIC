@@ -103,6 +103,12 @@ void sf_grid_t::init(const sched_cell_params_t& cell_params_)
     pucch_mask.fill(cc_cfg->nof_prb() - pucch_nrb, cc_cfg->nof_prb());
   }
 }
+// ushasi
+void sf_grid_t::set_ul_mask(const prbmask_t& new_ul_mask) {
+    this->ul_mask = new_ul_mask;
+    // Implement any additional logic needed after updating the ul_mask.
+}
+//
 
 void sf_grid_t::new_tti(tti_point tti_rx_)
 {
@@ -319,6 +325,12 @@ void sf_sched::init(const sched_cell_params_t& cell_params_)
   tti_alloc.init(*cc_cfg);
   max_msg3_prb = std::max(6U, cc_cfg->cfg.cell.nof_prb - tti_alloc.get_pucch_width());
 }
+
+// //ushasi
+// void sf_sched::set_ul_mask(const prbmask_t& new_ul_mask) {
+//     tti_alloc.set_ul_mask(new_ul_mask);
+// }
+// //
 
 void sf_sched::new_tti(tti_point tti_rx_, sf_sched_result* cc_results_)
 {

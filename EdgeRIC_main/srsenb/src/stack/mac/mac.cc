@@ -77,6 +77,9 @@ bool __outfile_seq_flag_5 = false ;
 bool __outfilenewall_flag = false ; 
 bool oftrue = true;
 
+std::map<uint16_t, float> snr_ul_ues; // ushasi
+std::map<uint16_t, uint32_t> pending_data_ul_mac; // ushasi
+
 //std::ofstream outfile ;
 //bool __outfile_flag = false ; 
 namespace srsenb {
@@ -585,6 +588,8 @@ int mac::snr_info(uint32_t tti_rx, uint16_t rnti, uint32_t enb_cc_idx, float snr
   }
 
   rrc_h->set_radiolink_ul_state(rnti, snr >= args.rlf_min_ul_snr_estim);
+  // std::map<uint16_t, float> snr_ul_ues; // ushasi
+  snr_ul_ues[rnti] = snr;
 
   return scheduler.ul_snr_info(tti_rx, rnti, enb_cc_idx, snr, (uint32_t)ch);
 }
@@ -922,9 +927,46 @@ void mac::ric_comm(std::map<uint16_t, float>& weights)
   // }
 }
 #else
-void mac::ric_comm(std::map<uint16_t, float>& weights)
-{
 
+
+
+/// @brief 
+/// @param weights 
+/// @param a 
+/// @param b 
+/// @param pending_data_ul 
+void mac::ric_comm(std::map<uint16_t, float>& weights, uint8_t& a, uint8_t& b, std::map<uint16_t, uint32_t>& pending_data_ul)
+{
+    // std::ofstream logFile("ric_comm_log.txt", std::ios::app);
+    // if (logFile.is_open()) {
+    //     // Log the values of 'a' and 'b'
+    //     logFile << "a: " << static_cast<int>(a) << ", b: " << static_cast<int>(b) << '\n';
+    //     logFile << " TTI RAN index: " << tti_ran_index << '\n';
+
+    //     // Log the contents of 'weights'
+    //     logFile << "Weights:" << '\n';
+    //     for (const auto& pair : weights) {
+    //         logFile << "RNTI: " << pair.first << ", Weight: " << pair.second << '\n';
+    //     }
+
+    //     // Log the contents of 'pending_data_ul'
+    //     logFile << "Pending UL Data:" << '\n';
+    //     for (const auto& pair : pending_data_ul) {
+          
+    //         logFile << "RNTI: " << pair.first << ", Pending Data: " << pair.second << '\n';
+    //     }
+
+    //     logFile << "UL SNR info:" << '\n';
+    //     for (const auto& pair : snr_ul_ues) {
+          
+    //         logFile << "RNTI: " << pair.first << ", UL SNR: " << pair.second << '\n';
+    //     }
+
+    //     logFile << "\n"; // Add a newline for readability between entries
+    //     logFile.close(); // Close the file after writing
+    // } else {
+    //     std::cerr << "Unable to open log file.\n";
+    // }
   //static mac_metrics_t ue_metrics;
   //static mac_ue_metrics_t ue_metrics;
   //tti_ran_index+=1;
@@ -935,13 +977,25 @@ void mac::ric_comm(std::map<uint16_t, float>& weights)
   fixed_weights[0] = 0.5 ; 
   fixed_weights[1] = 0.5 ; 
   */
-  
+  //a = 10;
+  //b = 17;
   static mac_ue_metrics_t ue_metrics;
   tti_ran_index+=1;
   int r = 0;
   float txbytes = txb;
   //ric_index = 0;
   
+
+   //std::ofstream logFile("ric_comm_log.txt", std::ios::app);
+  //  if (logFile.is_open()) {
+  //      // Write the values of a and b to the file
+  //      //logFile << "a: " << scheduler.a << ", b: " << scheduler.b << '\n'; // The unary + forces integer promotion for proper output
+  //      logFile << "a: " << static_cast<int>(scheduler.a) << ", b: " << static_cast<int>(scheduler.b) << '\n';
+
+  //      logFile.close(); // Close the file
+  //  } else {
+  //      std::cerr << "Unable to open log file.\n";
+  //  }
   
   //printf("ric_comm\n"); 
   std::string send_message_to_rl("");
@@ -1009,6 +1063,8 @@ void mac::ric_comm(std::map<uint16_t, float>& weights)
       size_t len_delimiter = space_delimiter.length(); 
       size_t pos_rnti = 0; 
       size_t pos_weight = 0 ;
+      size_t pos_a = 0;
+      size_t pos_b = 0;
       size_t pos_idx = 0 ; 
       size_t pos_preranind1 = 0;
       size_t pos_preranind2 = 0;
@@ -1039,6 +1095,17 @@ void mac::ric_comm(std::map<uint16_t, float>& weights)
           //printf("received: rnti: %i  , weight : %f \n", rnti, weight) ;
         }
       }
+      pos_a = text.find(space_delimiter);
+      int c = std::stof(text.substr(0,pos_a));
+      text.erase(0, pos_a + len_delimiter);
+
+      pos_b = text.find(space_delimiter);
+      int d = std::stof(text.substr(0,pos_b));
+      text.erase(0, pos_b + len_delimiter);
+
+      a = c;
+      b = d;
+
       pos_idx = text.find(space_delimiter);
       int ric_ind = std::stoi(text.substr(0,pos_idx));
       ric_index = ric_ind;
@@ -1078,7 +1145,13 @@ void mac::ric_comm(std::map<uint16_t, float>& weights)
   //if (__outfilenewall_flag) outfilenewall <<  std::to_string(ric_index) + ", ";
 
   
+  std::ofstream logFile("ue_metrics.log", std::ios::out | std::ios::app); // Open in append mode
 
+  if (!logFile.is_open()) {
+      std::cerr << "Failed to open log file." << std::endl;
+      return; // or handle the error as appropriate
+  }
+  logFile << "RIC index: " << ric_index << std::endl;
   for (auto& ue_pair : ue_db) {
     int backlog = backlogBuffer[ue_pair.first]; 
     ue_pair.second->metrics_read(&ue_metrics);
@@ -1086,6 +1159,34 @@ void mac::ric_comm(std::map<uint16_t, float>& weights)
 
     uint8_t rnti = ue_pair.first; 
     uint8_t cqi = (uint8_t) ue_metrics.dl_cqi; 
+    float snr_ue = snr_ul_ues[rnti];
+
+    uint8_t rx_brate = (uint8_t) ue_metrics.rx_brate;
+    uint8_t rx_errors = (uint8_t) ue_metrics.rx_errors;
+    uint8_t rx_packets = (uint8_t) ue_metrics.rx_pkts;
+    uint8_t ue_buf = (uint8_t) ue_metrics.ul_buffer;
+    uint32_t tti_count = (uint32_t) ue_metrics.nof_tti;
+    //float ul_mcs_ue = (float) ue_metrics.ul_mcs;
+    
+
+    uint8_t tx_brate = (uint8_t) ue_metrics.tx_brate;
+    uint8_t tx_errors = (uint8_t) ue_metrics.tx_errors;
+    uint8_t tx_packets = (uint8_t) ue_metrics.tx_pkts;
+
+    // Log the desired metrics to the file
+    logFile << "RNTI: " << static_cast<int>(rnti)
+            << ", TTI: " << tti_ran_index
+            << ", TTI-UE: " << tti_count
+            //<< ", CQI: " << static_cast<int>(cqi)
+            //<< ", tx_brate: " << static_cast<int>(tx_brate)
+            //<< ", tx_errors: " << static_cast<int>(tx_errors)
+            //<< ", tx_packets: " << static_cast<int>(tx_packets)
+            << ", snr_ue: " << snr_ue
+            << ", rx_brate: " << static_cast<int>(rx_brate)
+            << ", rx_errors: " << static_cast<int>(rx_errors)
+            << ", rx_packets: " << static_cast<int>(rx_packets) 
+            << ", UL buffer: " << static_cast<int>(ue_buf) 
+            << ", Masking info: a: " << static_cast<int>(scheduler.a)  << " b: " << static_cast<int>(scheduler.b) << std::endl;
     
 
     __cqis[rnti] = cqi ? cqi : __cqis[rnti]; 
@@ -1103,6 +1204,12 @@ void mac::ric_comm(std::map<uint16_t, float>& weights)
     //   zmq_count = 0;
     // }
   }
+  for (const auto& pair : pending_data_ul) {
+          uint16_t rnti = pair.first;
+          uint32_t pd_ue = pair.second;
+          float snr_ue = snr_ul_ues[rnti];
+          send_message_to_rl += std::to_string(rnti) + " " + std::to_string(snr_ue) + " " + std::to_string(pd_ue) + " "; 
+        }
   send_message_to_rl += str;
   if (__outfilenewall_flag) outfilenewall <<  std::to_string(preran_index) + ", " + std::to_string(ric_index) + ", ";
   // if(ue_db.size() == num_ues)
@@ -1174,6 +1281,7 @@ void mac::calFairness(sched_interface::dl_sched_res_t sched_result){
   uint32_t tx_bytes = 0;
   uint8_t sz = sched_result.data.size();
   std::map<uint16_t, float> tx_bytes_ues;
+  
   
   for (uint32_t k = 0 ; k < sz; k++ )
   {
@@ -1380,7 +1488,10 @@ void mac::calFairness(sched_interface::dl_sched_res_t sched_result){
 
 int mac::get_dl_sched(uint32_t tti_tx_dl, dl_sched_list_t& dl_sched_res_list)
 {
-  ric_comm(scheduler.weights);
+  
+  ric_comm(scheduler.weights, scheduler.a, scheduler.b, scheduler.pending_data_ul); // place in the right general location
+  
+  
  
   if (!started) {
     return 0;
@@ -1637,6 +1748,7 @@ int mac::get_mch_sched(uint32_t tti, bool is_mcch, dl_sched_list_t& dl_sched_res
     ue_db[SRSRAN_MRNTI]->metrics_tx(true, mcs.tbs);
     dl_sched_res->pdsch[0].data[0] =
         ue_db[SRSRAN_MRNTI]->generate_mch_pdu(tti % SRSRAN_FDD_NOF_HARQ, mch, mch.num_mtch_sched + 1, mcs.tbs / 8);
+
   } else {
     uint32_t current_lcid = 1;
     uint32_t mtch_index   = 0;
@@ -1713,10 +1825,21 @@ uint8_t* mac::assemble_rar(sched_interface::dl_sched_rar_grant_t* grants,
 
 int mac::get_ul_sched(uint32_t tti_tx_ul, ul_sched_list_t& ul_sched_res_list)
 {
+  
   if (!started) {
     return SRSRAN_SUCCESS;
   }
+  
+  //std::ofstream logFile("ric_comm_log.txt", std::ios::app);
+  //  if (logFile.is_open()) {
+  //      // Write the values of a and b to the file
+  //      //logFile << "a: " << scheduler.a << ", b: " << scheduler.b << '\n'; // The unary + forces integer promotion for proper output
+  //      logFile << "a: " << static_cast<int>(scheduler.a) << ", b: " << static_cast<int>(scheduler.b) << '\n';
 
+  //      logFile.close(); // Close the file
+  //  } else {
+  //      std::cerr << "Unable to open log file.\n";
+  //  }
   logger.set_context(TTI_SUB(tti_tx_ul, FDD_HARQ_DELAY_UL_MS + FDD_HARQ_DELAY_DL_MS));
 
   srsran::rwlock_read_guard lock(rwlock);
@@ -1725,6 +1848,8 @@ int mac::get_ul_sched(uint32_t tti_tx_ul, ul_sched_list_t& ul_sched_res_list)
   for (auto& ue : ue_db) {
     ue.second->tic();
   }
+  scheduler.pending_data_ul = scheduler.send_ul_pending_data_from_sched();
+
 
   for (uint32_t enb_cc_idx = 0; enb_cc_idx < cell_config.size(); enb_cc_idx++) {
     ul_sched_t* phy_ul_sched_res = &ul_sched_res_list[enb_cc_idx];
@@ -1772,6 +1897,7 @@ int mac::get_ul_sched(uint32_t tti_tx_ul, ul_sched_list_t& ul_sched_res_list)
         } else {
           logger.warning("Invalid UL scheduling result. User 0x%x does not exist", rnti);
         }
+
       } else {
         logger.warning("Grant %d for rnti=0x%x has zero TBS", i, sched_result.pusch[i].dci.rnti);
       }

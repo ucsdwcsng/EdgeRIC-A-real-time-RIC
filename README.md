@@ -74,28 +74,7 @@ cd EdgeRIC_main
 ```
 
 ### Starting iperf tarffic 
-Terminal 3:  
-```bash
-cd EdgeRIC_main
-./iperf_server_{i}ues.sh
-```
-Terminal 4:  
-```bash
-cd EdgeRIC_main
-./iperf_client_{i}ues.sh <rate_ue{i}> <duration>, eg: ./iperf_client_2ues.sh 10M 10M 1000
-```
+visit /traffic-generator
 
 ## Run the Real Time RIC
-Terminal 5:  
-
-To inititate default scheduling (Max Weight):  
-```bash
-cd real_time_RIC  
-./run_defaultscheduling.sh <{i}>, eg: ./run_deafultscheduling.sh 2 for 2 UEs    
-```
-
-To initiate training for RL agent:  
-```bash
-cd real_time_RIC  
-./run_ppo.sh   
-```
+visit /real_time_RIC

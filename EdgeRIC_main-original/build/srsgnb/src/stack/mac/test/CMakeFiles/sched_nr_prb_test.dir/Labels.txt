@@ -1,0 +1,5 @@
+# Directory labels
+ sched
+ nr
+# Source files and their labels
+/home/wcsng-23/gitrepos/EdgeRIC-A-real-time-RIC/EdgeRIC_main/srsgnb/src/stack/mac/test/sched_nr_prb_test.cc

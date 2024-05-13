@@ -100,6 +100,11 @@ public:
   alloc_result reserve_ul_prbs(const prbmask_t& prbmask, bool strict);
   alloc_result reserve_ul_prbs(prb_interval alloc, bool strict);
   bool         find_ul_alloc(uint32_t L, prb_interval* alloc) const;
+  
+
+  //ushasi
+  void set_ul_mask(const prbmask_t& new_ul_mask);
+  //
 
   // getters
   const rbgmask_t&        get_dl_mask() const { return dl_mask; }
@@ -189,6 +194,10 @@ public:
   alloc_result
        alloc_pdcch_order(const sched_interface::dl_sched_po_info_t& po_cfg, uint32_t aggr_lvl, rbg_interval rbgs);
   bool reserve_dl_rbgs(uint32_t rbg_start, uint32_t rbg_end) { return tti_alloc.reserve_dl_rbgs(rbg_start, rbg_end); }
+
+  // ushasi
+  void set_ul_mask(prbmask_t new_ul_mask){tti_alloc.set_ul_mask(new_ul_mask);}
+  //
 
   // UL alloc methods
   alloc_result alloc_msg3(sched_ue* user, const sched_interface::dl_sched_rar_grant_t& rargrant);

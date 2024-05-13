@@ -26,6 +26,7 @@
 #include "srsran/common/standard_streams.h"
 #include "srsran/common/string_helpers.h"
 #include "srsran/interfaces/enb_rrc_interface_mac.h"
+std::map<uint16_t, uint32_t> pending_data_ul_local_sc; 
 
 namespace srsenb {
 
@@ -383,13 +384,20 @@ void sched::carrier_sched::set_dl_tti_mask(uint8_t* tti_mask, uint32_t nof_sfs)
   sf_dl_mask.assign(tti_mask, tti_mask + nof_sfs);
 }
 
-//const cc_sched_result& sched::carrier_sched::generate_tti_result(tti_point tti_rx)
-const cc_sched_result& sched::carrier_sched::generate_tti_result(tti_point tti_rx, std::map<uint16_t, float>& weights_recved)
+// const cc_sched_result& sched::carrier_sched::generate_tti_result(tti_point tti_rx)
+const cc_sched_result& sched::carrier_sched::generate_tti_result(tti_point                     tti_rx,
+                                                                 std::map<uint16_t, float>&    weights_recved,
+                                                                 uint8_t&                      a,
+                                                                 uint8_t&                      b,
+                                                                 std::map<uint16_t, uint32_t>& pending_data_ul)
 {
+  this->weights         = weights_recved;
+  this->a               = a;
+  this->b               = b;
+  //this->pending_data_ul = pending_data_ul;
 
-   this->weights = weights_recved;
-  //sched_algo->weights = weights_recved;
-  //printf("weights[0]: %f weights[1]: %f \n", this->weights[0], this->weights[1]);   
+  // sched_algo->weights = weights_recved;
+  // printf("weights[0]: %f weights[1]: %f \n", this->weights[0], this->weights[1]);
 
   sf_sched*        tti_sched = get_sf_sched(tti_rx);
   sf_sched_result* sf_result = prev_sched_results->get_sf(tti_rx);
@@ -451,6 +459,11 @@ const cc_sched_result& sched::carrier_sched::generate_tti_result(tti_point tti_r
   return *cc_result;
 }
 
+std::map<uint16_t, uint32_t> sched::carrier_sched::send_ul_pending_data()
+{
+  return pending_data_ul_local_sc;
+}
+
 void sched::carrier_sched::alloc_dl_users(sf_sched* tti_result)
 {
   if (sf_dl_mask[tti_result->get_tti_tx_dl().to_uint() % sf_dl_mask.size()] != 0) {
@@ -473,7 +486,15 @@ void sched::carrier_sched::alloc_dl_users(sf_sched* tti_result)
 int sched::carrier_sched::alloc_ul_users(sf_sched* tti_sched)
 {
   /* Call scheduler for UL data */
-  sched_algo->sched_ul_users(*ue_db, tti_sched);
+  
+  sched_algo->sched_ul_users(*ue_db, tti_sched, a, b, pending_data_ul);
+  for (const auto& pair : pending_data_ul) {
+      
+      uint16_t rnti_ue = pair.first;
+      uint32_t pending = pair.second;
+      pending_data_ul_local_sc[rnti_ue] = pending;
+  }
+ //this->pending_data_ul = pending_data_ul;
 
   return SRSRAN_SUCCESS;
 }

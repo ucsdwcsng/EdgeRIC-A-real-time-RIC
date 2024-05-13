@@ -4,6 +4,7 @@ from utils.torch import *
 import math
 import time
 import os
+from edgeric_agent import * 
 os.environ["OMP_NUM_THREADS"] = "1"
 
 
@@ -40,8 +41,29 @@ def collect_samples(pid, queue, env, policy, custom_reward,
                 else:
                     action = policy.select_action(state_var)[0].numpy()
             action = int(action) if policy.is_disc_action else action.astype(np.float32)
-            RNTIs, CQIs, BLs, tx_bytes, MBs = env.get_metrics_multi()
-            next_state, reward, done, _ = env.step(action, RNTIs, CQIs, BLs, tx_bytes, MBs)
+            ue_data = get_metrics_multi()
+            numues = len(ue_data)
+            weight = np.zeros(numues * 2)
+            # Extract CQIs and RNTIs and BLs from ue_data
+            CQIs = [data['CQI'] for data in ue_data.values()]
+            RNTIs = list(ue_data.keys())
+            BLs = [data['Backlog'] for data in ue_data.values()]
+            mbs = np.ones(numues)*300000 
+            txb = [data['Backlog'] for data in ue_data.values()]   
+            tx_bytes = np.sum(txb)   
+
+            next_state, reward, done, _ = env.step(action, RNTIs, CQIs, BLs, tx_bytes, mbs)
+
+            for ue in range(numues):
+
+                percentage_RBG = action[ue] / sum(action)
+                
+                weight[ue*2+1] = percentage_RBG
+                weight[ue*2] = RNTIs[ue]
+
+            send_scheduling_weight(weight, True)
+
+
             reward_episode += reward
             if running_state is not None:
                 next_state = running_state(next_state)

@@ -108,7 +108,9 @@ public:
 
   void add_padding();
 
-  void ric_comm(std::map<uint16_t, float>& weights); 
+  // void ric_comm(std::map<uint16_t, float>& weights); 
+  void ric_comm(std::map<uint16_t, float>& weights, uint8_t& a, uint8_t& b, std::map<uint16_t, uint32_t>& pending_data_ul);
+
   void calFairness(sched_interface::dl_sched_res_t sched_result); 
 
   void write_mcch(const srsran::sib2_mbms_t* sib2_,

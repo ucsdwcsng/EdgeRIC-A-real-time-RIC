@@ -90,7 +90,7 @@ void sched_time_rr::sched_dl_newtxs(sched_ue_list& ue_db, sf_sched* tti_sched, s
  *                         Uplink
  *****************************************************************/
 
-void sched_time_rr::sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched)
+void sched_time_rr::sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched, uint8_t& a, uint8_t& b, std::map<uint16_t, uint32_t>& pending_data_ul)
 {
   if (ue_db.empty()) {
     return;

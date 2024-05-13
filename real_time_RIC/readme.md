@@ -1,5 +1,3 @@
-# Simulator for RL agent training
-
 ## RT-E2 agent
 
 edgeric_agent.py

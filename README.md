@@ -82,8 +82,8 @@ cd EdgeRIC_main
 ./run_srsran_{i}ues.sh
 ```
 
-## Starting tarffic 
+## Generating Traffic 
 visit /traffic-generator
 
-## Run EdgeRIC
+## Launch EdgeRIC
 visit /real_time_RIC

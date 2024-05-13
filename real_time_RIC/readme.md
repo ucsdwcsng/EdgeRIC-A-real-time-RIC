@@ -5,7 +5,7 @@ edgeric_agent
 │   ├── returnd ue_data dictionaru
 ├── send_control() # send the RT-E2 policy message to RAN once all μApps complete execution
     ├── send_scheduling_weight() #prepares the control message for the downlink scheduling action
-    ├── send_ul_prb #prepares the control message for the uplikn scheduling action
+    ├── send_ul_prb() #prepares the control message for the uplikn scheduling action
 
 ```
 

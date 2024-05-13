@@ -1,0 +1,25 @@
+defaults:
+  - _self_
+
+exp:
+  name: "unnamed"
+
+algorithm: "PPO"
+
+env: "StreamingEnv"
+
+env_config:
+  reward: "default"
+  res_map: {"1080p":1.0,"720p":1.0,}
+  chunk_map: {"1080p":2.0,"720p":1.0,}
+  prob_new_chunk: 1.0
+  prob_playout: 1.0
+  prob_reset: 0.001
+  base_station:
+    channel_probs: [0.6, 0.8, 0.9,]
+    max_len: 10
+  media_app:
+    max_len: 10
+    max_stall : 7
+    
+  

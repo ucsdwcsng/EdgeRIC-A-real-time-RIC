@@ -1,3 +1,4 @@
+We are training a PPO agent with the objective of throughput maximization in this particular study.
 
 ## Usage
 

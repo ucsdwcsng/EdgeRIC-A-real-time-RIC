@@ -245,9 +245,9 @@ algorithm_mapping = {
 }
 
 rl_model_mapping = {
-    "Initial Model": "path/to/initial_model_directory",
-    "Half Trained Model": "path/to/half_trained_model_directory",
-    "Fully Trained Model": "./rl_model"
+    "Initial Model": "../rl_model/initial_model",
+    "Half Trained Model": "../rl_model/half_trained_model",
+    "Fully Trained Model": "../rl_model/fully_trained_model"
 }
 
 

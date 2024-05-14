@@ -1,39 +1,34 @@
-# Simulator for RL agent training
+We are training a PPO agent with the objective of throughput maximization in this particular study.
 
 ## Usage
 
 ```bash
-python ppo_train.py --config-name=edge_ric
+sudo python3 muApp2_train_RL_DL_scheduling.py --config-name=edge_ric
 ```
 
-## ppo_train.py
+## muApp2_train_RL_DL_scheduling.py
 
 * Trains PPO agent for ```num_iters``` number of iterations
     * One iteration consists of training on 2048 samples and evaluating for 2048 timesteps
-    * The evaluation metric (avg reward per episode) is plotted as the training graph
-* Compares the performance of trained agent against baseline agents (MaxCQI and MaxBackPressure) on ```num_eval_episodes``` number of episodes and plots the reward attained for each agent in each of these eval episodes.
+    * The evaluation metric (avg reward per episode) is plotted as the training grap
 
 
 ## Repo Structure
 ```bash
-simulator
+
 ├── conf
 │   ├── edge_ric.yaml   # Config file for edgeric RL training
 │   ├── example.yaml
 │   ├── simpler_streaming.yaml
 │   └── single_agent.yaml
-├── model_best.pt # Saved policy neural network weights
-├── model_usage.py # File explaining how to use a trained model
 ├── outputs # Output logs of each training sorted chronologically
 │   ├── 2022-10-07
+         ├── model_best.pt # Saved policy neural network weights
 │          .
 │          .
 │          .
 │          
-├── ppo_train.py # Main training and evaluation code
-├── README.md
-├── rllib_train.py # For ray rllib training (not currently used)
-└── stream_rl # Name of the python package implementing the simulator mechanisms
+└── ../stream_rl # Name of the python package implementing the simulator mechanisms
     ├── callbacks.py
     ├── envs # All the envs
     │   ├── cqi_traces
@@ -53,6 +48,7 @@ simulator
     │   └── __init__.py
     └── rewards.py # Definition of reward functions to be used in envs
 ```
+Once the training completes: takes the model_best.pt and save in the ../rl_model folder
 
 ## EdgeRIC Env
 

@@ -1,0 +1,74 @@
+exp:
+  name: unnamed
+algorithm: PPO
+num_seeds: 1
+num_iters: 40
+num_eval_episodes: 2000
+env: EdgeRIC
+env_config:
+  augment_state_space: false
+  delay_state: 0
+  delay_action: 0
+  seed: -1
+  T: 5000
+  num_RBGs: 17
+  num_UEs: 2
+  backlog_population:
+  - - 1
+    - 3000
+  - - 1
+    - 3000
+  cqi_trace: stream_rl/envs/cqi_traces/data_triangle.csv
+  cqi_trace_eval: stream_rl/envs/cqi_traces/data_triangle.csv
+  reward: throughput
+  base_station:
+    max_len: 300000
+  cqi_map:
+    0:
+    - 0
+    - 0
+    1:
+    - 0.4432
+    - 0.2206
+    2:
+    - 0.6394
+    - 0.2047
+    3:
+    - 0.699
+    - 0.3575
+    4:
+    - 0.9112
+    - 0.2882
+    5:
+    - 1.0014
+    - 0.4647
+    6:
+    - 1.3261
+    - 0.3873
+    7:
+    - 1.5028
+    - 0.5879
+    8:
+    - 1.9077
+    - 0.3314
+    9:
+    - 2.0347
+    - 0.312
+    10:
+    - 2.0542
+    - 0.3142
+    11:
+    - 2.0479
+    - 0.3019
+    12:
+    - 2.0517
+    - 0.3086
+    13:
+    - 2.0303
+    - 0.317
+    14:
+    - 2.0239
+    - 0.3053
+    15:
+    - 2.0477
+    - 0.2942

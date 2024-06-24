@@ -246,17 +246,17 @@ rl_model_mapping = {
 
 
 # Establish a Redis connection (assuming Redis server is running locally)
-redis_db = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+#redis_db = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 # # REDIS server for ploting 
-redis_db = redis.StrictRedis(host = 'localhost', port=6379, decode_responses = False, db=0)
+#redis_db = redis.StrictRedis(host = 'localhost', port=6379, decode_responses = False, db=0)
 
 if __name__ == "__main__":
 
     while True:
         try:
-            selected_algorithm = redis_db.get('scheduling_algorithm')
-            #selected_algorithm = "Max CQI"
+            #selected_algorithm = redis_db.get('scheduling_algorithm')
+            selected_algorithm = "Max CQI"
             if selected_algorithm:
                 idx_algo = algorithm_mapping.get(selected_algorithm, None)
 

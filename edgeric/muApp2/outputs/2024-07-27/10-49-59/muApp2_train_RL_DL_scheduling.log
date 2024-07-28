@@ -1,0 +1,2 @@
+[2024-07-27 10:49:59,823][__main__][INFO] - ********* Training for seed 1 *********
+[2024-07-27 10:50:16,054][__main__][INFO] - 0	T_sample 6.3825	T_update 3.8670	T_eval 5.9373	train_R_min 1000000.00	train_R_max 1914191702.00	train_R_avg 1914191702.00	eval_R_avg 1914841341.00

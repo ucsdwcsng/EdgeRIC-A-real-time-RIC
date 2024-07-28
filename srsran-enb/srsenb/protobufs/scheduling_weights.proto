@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message SchedulingWeights {
+    uint32 ran_index = 1;
+    repeated float weights = 2;
+}
+
+message Blanking {
+    uint32 ran_index = 1;
+    int32 a = 2;
+    int32 b = 3;
+}

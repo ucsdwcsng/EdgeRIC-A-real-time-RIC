@@ -1,0 +1,13 @@
+[2024-07-26 18:54:10,093][__main__][INFO] - ********* Training for seed 1 *********
+[2024-07-26 18:54:25,467][__main__][INFO] - 0	T_sample 5.7482	T_update 3.8846	T_eval 5.6958	train_R_min 1000000.00	train_R_max 2105310375.00	train_R_avg 2105310375.00	eval_R_avg 1945775153.00
+[2024-07-26 18:54:41,158][__main__][INFO] - 1	T_sample 5.6579	T_update 4.0905	T_eval 5.9172	train_R_min 1000000.00	train_R_max 1942957252.00	train_R_avg 1942957252.00	eval_R_avg 1946956993.00
+[2024-07-26 18:54:56,379][__main__][INFO] - 2	T_sample 5.6966	T_update 3.8038	T_eval 5.6958	train_R_min 1000000.00	train_R_max 1945482501.00	train_R_avg 1945482501.00	eval_R_avg 1944833615.00
+[2024-07-26 18:55:11,601][__main__][INFO] - 3	T_sample 5.6761	T_update 3.8158	T_eval 5.6949	train_R_min 1000000.00	train_R_max 1942689852.00	train_R_avg 1942689852.00	eval_R_avg 1943898216.00
+[2024-07-26 18:55:26,899][__main__][INFO] - 4	T_sample 5.6976	T_update 3.8727	T_eval 5.7045	train_R_min 1000000.00	train_R_max 1943244415.00	train_R_avg 1943244415.00	eval_R_avg 1944876645.00
+[2024-07-26 18:55:42,169][__main__][INFO] - 5	T_sample 5.6847	T_update 3.8374	T_eval 5.7232	train_R_min 1000000.00	train_R_max 1943625583.00	train_R_avg 1943625583.00	eval_R_avg 1947027118.00
+[2024-07-26 18:55:57,437][__main__][INFO] - 6	T_sample 5.6990	T_update 3.8214	T_eval 5.7231	train_R_min 1000000.00	train_R_max 1944306301.00	train_R_avg 1944306301.00	eval_R_avg 1944843511.00
+[2024-07-26 18:56:12,588][__main__][INFO] - 7	T_sample 5.6970	T_update 3.7466	T_eval 5.6829	train_R_min 1000000.00	train_R_max 1944549087.00	train_R_avg 1944549087.00	eval_R_avg 1945100435.00
+[2024-07-26 18:56:27,905][__main__][INFO] - 8	T_sample 5.6908	T_update 3.9164	T_eval 5.6888	train_R_min 1000000.00	train_R_max 1944782769.00	train_R_avg 1944782769.00	eval_R_avg 1945100249.00
+[2024-07-26 18:56:43,359][__main__][INFO] - 9	T_sample 5.8180	T_update 3.8845	T_eval 5.7257	train_R_min 1000000.00	train_R_max 1943822353.00	train_R_avg 1943822353.00	eval_R_avg 1945871168.00
+[2024-07-26 18:56:58,518][__main__][INFO] - 10	T_sample 5.7258	T_update 3.6624	T_eval 5.7470	train_R_min 1000000.00	train_R_max 1947116873.00	train_R_avg 1947116873.00	eval_R_avg 1945156727.00
+[2024-07-26 18:57:13,841][__main__][INFO] - 11	T_sample 5.6879	T_update 3.8335	T_eval 5.7696	train_R_min 1000000.00	train_R_max 1944210009.00	train_R_avg 1944210009.00	eval_R_avg 1946854819.00

@@ -1,0 +1,6 @@
+[2024-07-27 12:37:16,332][__main__][INFO] - ********* Training for seed 1 *********
+[2024-07-27 12:37:31,888][__main__][INFO] - 0	T_sample 5.6878	T_update 4.1174	T_eval 5.7085	train_R_min 1000000.00	train_R_max 1959883634.00	train_R_avg 1959883634.00	eval_R_avg 1960590446.00
+[2024-07-27 12:37:47,443][__main__][INFO] - 1	T_sample 5.7436	T_update 3.9175	T_eval 5.8684	train_R_min 1000000.00	train_R_max 1960375342.00	train_R_avg 1960375342.00	eval_R_avg 1961243539.00
+[2024-07-27 12:38:03,245][__main__][INFO] - 2	T_sample 5.6842	T_update 4.3135	T_eval 5.7788	train_R_min 1000000.00	train_R_max 1959768434.00	train_R_avg 1959768434.00	eval_R_avg 1993180884.00
+[2024-07-27 12:38:19,214][__main__][INFO] - 3	T_sample 5.6931	T_update 4.5586	T_eval 5.6907	train_R_min 1000000.00	train_R_max 1958941356.00	train_R_avg 1958941356.00	eval_R_avg 1959261350.00
+[2024-07-27 12:38:34,530][__main__][INFO] - 4	T_sample 5.6813	T_update 3.8767	T_eval 5.7327	train_R_min 1000000.00	train_R_max 1959084427.00	train_R_avg 1959084427.00	eval_R_avg 1961043197.00

@@ -1,0 +1,29 @@
+defaults:
+  - _self_
+
+exp:
+  name: "unnamed"
+
+algorithm: "VI"
+algorithm_params:
+  convergence_tolerance: 0.000000001 # 1e-9
+
+env: "SingleAgentEnv"
+
+env_config:
+  discount_factor: 0.99
+  T: 1000
+  reward: "SimpleCost"
+  cost_params:
+    r: 7.0
+    c_2: 1.0
+    c_1: 3.0
+    lambda: 5
+  base_station:
+    success_prob: 0.9 # Block Error Rate 10%?
+    V_t: [0,1,2]
+  edge_device:
+    U_t: [0,1,2]
+    max_len: 30
+    
+  

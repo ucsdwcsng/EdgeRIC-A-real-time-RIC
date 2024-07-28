@@ -1,0 +1,34 @@
+
+2
+1 7
+1
+../cqis/cqi_trace_Ujwal_triangular_01062023_1.txt
+60000
+
+
+
+../cqis/cqi_car_20mph_3min.txt
+60000
+
+
+
+../cqis/cqi_trace_Ujwal_good_bad_01062023_2.txt
+1000
+
+
+../cqis/cqi_trace_Ujwal_triangular_01062023_2.txt
+60000
+
+
+../cqis/out_mac_realistic_spin_4_cqi.txt
+
+
+
+# params for ue2
+# in line 1 First: period of cqi emulation 
+# in line 2 First: minimum of cqi emulation
+# in line 2 Second: of maximum cqi emulation
+# If in line 2 both values are zero, it reads a file to get realistic cqi data.
+# in line 3 First: initial value of cqi emulation
+# in line 4: filename of cqi trace 
+# in line 5: number of data 

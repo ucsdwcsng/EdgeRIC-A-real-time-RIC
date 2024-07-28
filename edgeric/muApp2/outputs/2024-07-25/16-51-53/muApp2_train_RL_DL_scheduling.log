@@ -1,0 +1,21 @@
+[2024-07-25 16:51:53,537][__main__][INFO] - ********* Training for seed 1 *********
+[2024-07-25 16:52:09,104][__main__][INFO] - 0	T_sample 5.6742	T_update 4.0965	T_eval 5.7498	train_R_min 1000000.00	train_R_max 3677187158.00	train_R_avg 3677187158.00	eval_R_avg 3668793949.00
+[2024-07-25 16:52:24,629][__main__][INFO] - 1	T_sample 5.6716	T_update 3.8903	T_eval 5.9357	train_R_min 1000000.00	train_R_max 3830370962.00	train_R_avg 3830370962.00	eval_R_avg 3660486201.00
+[2024-07-25 16:52:40,061][__main__][INFO] - 2	T_sample 5.6714	T_update 4.0562	T_eval 5.6794	train_R_min 1000000.00	train_R_max 3830080997.00	train_R_avg 3830080997.00	eval_R_avg 3686956710.00
+[2024-07-25 16:52:55,469][__main__][INFO] - 3	T_sample 5.6739	T_update 4.0240	T_eval 5.6864	train_R_min 1000000.00	train_R_max 3830270607.00	train_R_avg 3830270607.00	eval_R_avg 3662170230.00
+[2024-07-25 16:53:10,867][__main__][INFO] - 4	T_sample 5.6682	T_update 3.9741	T_eval 5.7331	train_R_min 1000000.00	train_R_max 3830503620.00	train_R_avg 3830503620.00	eval_R_avg 3665019876.00
+[2024-07-25 16:53:26,019][__main__][INFO] - 5	T_sample 5.6711	T_update 3.8139	T_eval 5.6452	train_R_min 1000000.00	train_R_max 3830249686.00	train_R_avg 3830249686.00	eval_R_avg 3662366668.00
+[2024-07-25 16:53:41,198][__main__][INFO] - 6	T_sample 5.6766	T_update 3.8309	T_eval 5.6458	train_R_min 1000000.00	train_R_max 3802869403.00	train_R_avg 3802869403.00	eval_R_avg 3663001416.00
+[2024-07-25 16:53:56,384][__main__][INFO] - 7	T_sample 5.6327	T_update 3.7449	T_eval 5.7868	train_R_min 1000000.00	train_R_max 3830396154.00	train_R_avg 3830396154.00	eval_R_avg 3666744337.00
+[2024-07-25 16:54:11,500][__main__][INFO] - 8	T_sample 5.6280	T_update 3.8069	T_eval 5.6584	train_R_min 1000000.00	train_R_max 3830395436.00	train_R_avg 3830395436.00	eval_R_avg 3664699315.00
+[2024-07-25 16:54:26,755][__main__][INFO] - 9	T_sample 5.6157	T_update 3.9575	T_eval 5.6531	train_R_min 1000000.00	train_R_max 3830165064.00	train_R_avg 3830165064.00	eval_R_avg 3679340040.00
+[2024-07-25 16:54:41,954][__main__][INFO] - 10	T_sample 5.6294	T_update 3.9053	T_eval 5.6420	train_R_min 1000000.00	train_R_max 3830073909.00	train_R_avg 3830073909.00	eval_R_avg 3284875154.00
+[2024-07-25 16:54:57,077][__main__][INFO] - 11	T_sample 5.6295	T_update 3.8116	T_eval 5.6559	train_R_min 1000000.00	train_R_max 3830231913.00	train_R_avg 3830231913.00	eval_R_avg 3655911605.00
+[2024-07-25 16:55:12,285][__main__][INFO] - 12	T_sample 5.6792	T_update 3.8829	T_eval 5.6234	train_R_min 1000000.00	train_R_max 3830740542.00	train_R_avg 3830740542.00	eval_R_avg 3663848546.00
+[2024-07-25 16:55:27,483][__main__][INFO] - 13	T_sample 5.6260	T_update 3.8455	T_eval 5.7060	train_R_min 1000000.00	train_R_max 3829992405.00	train_R_avg 3829992405.00	eval_R_avg 3676753645.00
+[2024-07-25 16:55:42,878][__main__][INFO] - 14	T_sample 5.7305	T_update 3.8264	T_eval 5.8165	train_R_min 1000000.00	train_R_max 3830417872.00	train_R_avg 3830417872.00	eval_R_avg 3664932915.00
+[2024-07-25 16:55:58,086][__main__][INFO] - 15	T_sample 5.6466	T_update 3.8129	T_eval 5.7238	train_R_min 1000000.00	train_R_max 3793789555.00	train_R_avg 3793789555.00	eval_R_avg 3668065620.00
+[2024-07-25 16:56:13,340][__main__][INFO] - 16	T_sample 5.6020	T_update 3.8984	T_eval 5.7302	train_R_min 1000000.00	train_R_max 3830198048.00	train_R_avg 3830198048.00	eval_R_avg 3657891754.00
+[2024-07-25 16:56:28,510][__main__][INFO] - 17	T_sample 5.6379	T_update 3.8501	T_eval 5.6574	train_R_min 1000000.00	train_R_max 3830076959.00	train_R_avg 3830076959.00	eval_R_avg 3675304582.00
+[2024-07-25 16:56:43,843][__main__][INFO] - 18	T_sample 5.6611	T_update 3.9289	T_eval 5.7206	train_R_min 1000000.00	train_R_max 3830332672.00	train_R_avg 3830332672.00	eval_R_avg 3678170730.00
+[2024-07-25 16:56:59,094][__main__][INFO] - 19	T_sample 5.6674	T_update 3.8741	T_eval 5.6845	train_R_min 1000000.00	train_R_max 3830210762.00	train_R_avg 3830210762.00	eval_R_avg 3667218822.00

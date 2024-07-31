@@ -126,8 +126,10 @@ class EdgeRIC(gym.Env):
         
         total_bytes_transferred = 0
         num_ues = len(RNTIs)
+        #print(f"size of mbs: {RNTIs}")
         
         for ue in range(num_ues): 
+            
             self.mbs[ue] = MBs[ue]
             self.cqis[ue] = CQIs[ue]
             

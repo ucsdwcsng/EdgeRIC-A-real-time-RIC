@@ -62,7 +62,7 @@ parser.add_argument(
 parser.add_argument(
     "--gamma",
     type=float,
-    default=0.99,
+    default=0.9,
     metavar="G",
     help="discount factor (default: 0.99)",
 )
@@ -72,7 +72,7 @@ parser.add_argument(
 parser.add_argument(
     "--l2-reg",
     type=float,
-    default=1e-3,
+    default=1e-2,
     metavar="G",
     help="l2 regularization regression (default: 1e-3)",
 )
@@ -138,7 +138,7 @@ parser.add_argument(
 parser.add_argument("--gpu-index", type=int, default=0, metavar="N")
 args = parser.parse_args()
 
-@hydra.main(config_path="conf", config_name="edge_ric", version_base=None)
+@hydra.main(config_path="conf", config_name="edge_ric") #, version_base=None)
 def main(conf):
 
     dtype = torch.float32
@@ -212,6 +212,12 @@ def main(conf):
     def main_loop():
         hydra_cfg = hydra.core.hydra_config.HydraConfig.get()
         output_dir = hydra_cfg["run"]["dir"]
+         # Ensure the directory exists
+        if not os.path.exists(output_dir):
+            print(f"Creating directory: {output_dir}")
+            os.makedirs(output_dir, exist_ok=True)
+        else:
+            print(f"Directory already exists: {output_dir}")
         #output_dir = "/home/wcsng-24/Ushasi/Pytorch-RL-Custom_mobicom/simulator/Pytorch-RL-Custom_mobicom/simulator/outputs/Ushasi"
         ppo_rewards = []
         for i_iter in range(conf["num_iters"]):

@@ -29,9 +29,12 @@ void edgeric::init() {
     publisher.bind("ipc:///tmp/socket_snr_cqi");
 
     subscriber_weights.connect("ipc:///tmp/control_weights_actions");
-    subscriber_weights.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+    zmq_setsockopt(subscriber_weights, ZMQ_SUBSCRIBE, "", 0);
+    // subscriber_weights.setsockopt(ZMQ_SUBSCRIBE, "", 0);
     int conflate = 1;
-    subscriber_weights.setsockopt(ZMQ_CONFLATE, &conflate, sizeof(conflate));
+    // subscriber_weights.setsockopt(ZMQ_CONFLATE, &conflate, sizeof(conflate));
+    zmq_setsockopt(subscriber_weights, ZMQ_CONFLATE, &conflate, sizeof(conflate));
+
 
     // subscriber_blanking.connect("ipc:///tmp/control_blanking_actions");
     // subscriber_blanking.setsockopt(ZMQ_SUBSCRIBE, "", 0);

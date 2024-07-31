@@ -1,8 +1,8 @@
 
 2
-1 7
+0 0
 1
-../cqis/cqi_trace_Ujwal_triangular_01062023_1.txt
+../cqis/random_1.txt
 60000
 
 

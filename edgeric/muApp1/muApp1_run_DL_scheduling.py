@@ -21,10 +21,15 @@ import redis
 from edgeric_messenger import *
 
 total_brate = []
+avg_CQIs  = []
+
 
 def eval_loop_weight(eval_episodes, idx_algo):
     
     key_index = 0
+    global avg_CQIs
+    avg_CQIs = np.zeros(2)
+    rr_cnt = 0
     
     for i_episode in range(eval_episodes):
         cnt = 0
@@ -35,7 +40,7 @@ def eval_loop_weight(eval_episodes, idx_algo):
    
         if(idx_algo == 0):
             flag = False # to be deleted
-            weights = fixed_weights(flag)
+            weights = fixed_weights()
             send_scheduling_weight(weights, True)
             value_algo = "Fixed Weights"
 
@@ -53,15 +58,18 @@ def eval_loop_weight(eval_episodes, idx_algo):
         
         # algo3 PropFair
         if(idx_algo == 3):
-            weights = algo3_propFair_multi(prev_weight_x, prev_weight_y, flag, f_stalls_timeseries) 
-            rnti_weights, prev_weights, avg_CQIs = algo2_propFair_multi(prev_weights, avg_CQIs, flag)
-
-
-
-
+            weights, average_cqis = algo3_propFair_multi(avg_CQIs)
+            avg_CQIs = average_cqis 
             send_scheduling_weight(weights, True)
             value_algo = "Proportional Fairness"
-            
+
+        # algo3 PropFair
+        if(idx_algo == 4):
+            weights = algo4_roundrobin_multi(rr_cnt)
+            send_scheduling_weight(weights, True)
+            rr_cnt = rr_cnt + 1
+            value_algo = "Round Robin"
+
         if(flag == True):
             cnt = 0
             flag = False  
@@ -69,15 +77,20 @@ def eval_loop_weight(eval_episodes, idx_algo):
     #redis_db.set(key_algo, value_algo)   
 
 def fixed_weights():
+    global total_brate
     ue_data = get_metrics_multi() #subscriber_cqi_snr()
     numues = len(ue_data)
     weights = np.zeros(numues * 2)
     RNTIs = list(ue_data.keys())
+    txb = [data['Tx_brate'] for data in ue_data.values()]
+    brate = np.sum(txb)
+    total_brate.append(brate)
 
     for i in range(numues):
         # Store RNTI and corresponding weight
         weights[i*2+0] = RNTIs[i]
-        weights[i*2+1] = 1/numues
+        #weights[i*2+1] = 1/numues
+        weights[i*2+1] = 0.3 if i == 0 else 0.7 if i == 1 else 1/numues
     
     return weights
 
@@ -153,7 +166,8 @@ def algo2_maxWeight_multi():
     
     return weights 
 
-def algo3_propFair_multi(prev_weights, avg_CQIs, flag):
+def algo3_propFair_multi(avg_CQIs):
+    global total_brate
     ue_data = get_metrics_multi() #subscriber_cqi_snr()
     numues = len(ue_data)
     weights = np.zeros(numues * 2)
@@ -161,9 +175,14 @@ def algo3_propFair_multi(prev_weights, avg_CQIs, flag):
     CQIs = [data['CQI'] for data in ue_data.values()]
     RNTIs = list(ue_data.keys())
     BLs = [data['Backlog'] for data in ue_data.values()]
+    txb = [data['Tx_brate'] for data in ue_data.values()]
+    brate = np.sum(txb)
+    total_brate.append(brate)
 
     if (min(CQIs)>0): 
         gamma = 0.1 
+        avg_CQIs = np.array(avg_CQIs)
+        CQIs = np.array(CQIs)
         if(avg_CQIs[0] == 0): avg_CQIs[0]=CQIs[0]
         if(avg_CQIs[1] == 0): avg_CQIs[1]=CQIs[1]
         
@@ -178,21 +197,59 @@ def algo3_propFair_multi(prev_weights, avg_CQIs, flag):
         
         new_weights = np.round(temp_weights/(np.sum(temp_weights)), 2)
         #new_weight_y = round(1-new_weight_x, 2)
-        
-        
-        prev_weights = new_weights
 
-        for i in range(env.numArms):
+        for i in range(numues):
             weights[i*2+0] = RNTIs[i]
-            weights[i*2+1] = prev_weights[i]
+            weights[i*2+1] = new_weights[i]
         
     else:
-        for i in range(env.numArms):
+        for i in range(numues):
             weights[i*2+0] = RNTIs[i]
-            weights[i*2+1] = prev_weights[i]
+            weights[i*2+1] = 1/numues
 
     
-    return weights, prev_weights, avg_CQIs
+    return weights, avg_CQIs
+
+def algo4_roundrobin_multi(rr_cnt):
+    global total_brate
+    ue_data = get_metrics_multi() #subscriber_cqi_snr()
+    numues = len(ue_data)
+    weights = np.zeros(numues * 2)
+
+    # Extract CQIs and RNTIs from ue_data
+    CQIs = [data['CQI'] for data in ue_data.values()]
+    RNTIs = list(ue_data.keys())
+    txb = [data['Tx_brate'] for data in ue_data.values()]
+    brate = np.sum(txb)
+    total_brate.append(brate)
+    index = rr_cnt % numues
+    rr_cnt = rr_cnt + 1
+
+    if min(CQIs) > 0:  # Check if all CQIs are positive
+        new_weights = np.zeros(numues)
+        
+        high = 1 - ((numues - 1) * 0.1)
+        low = 0.1
+        for i in range(numues):
+            if i == index:
+                new_weights[i] = high
+            else:
+                new_weights[i] = low
+            
+            # Store RNTI and corresponding weight
+            weights[i*2+0] = RNTIs[i]
+            weights[i*2+1] = new_weights[i]
+        #print(f"Printing weight: {weights}\n")
+        return weights
+        
+    else:  
+        for i in range(numues):
+        # Store RNTI and corresponding weight
+            weights[i*2+0] = RNTIs[i]
+            weights[i*2+1] = 1/numues
+        #print(f"Printing weight: {weights}\n")  
+        return weights
+
 
 def eval_loop_model(num_episodes, out_dir):
     output_dir = out_dir 
@@ -243,9 +300,10 @@ def eval_loop_model(num_episodes, out_dir):
     
 #################
 algorithm_mapping = {
+    "Fixed Weight": 0,
     "Max CQI": 1,
     "Max Weight": 2,
-    "Proportional Fair (PF)": 3,
+    "Proportional Fair": 3,
     "Round Robin": 4,
     "RL": 20  # Adjust according to your specific algorithms and indices
 }

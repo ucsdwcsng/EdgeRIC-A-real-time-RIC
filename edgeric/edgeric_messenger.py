@@ -40,7 +40,7 @@ global_sending_flag = False
 
 def send_scheduling_weight(weights, flag):
     # Create an instance of the SchedulingWeights message
-    msg = scheduling_weights_pb2.SchedulingWeights()
+    msg = control_actions_pb2.SchedulingWeights()
     msg.ran_index = ran_index
     msg.weights.extend(weights)
 
@@ -50,11 +50,11 @@ def send_scheduling_weight(weights, flag):
     # Send the serialized message over ZMQ
     publisher_weights_socket.send(serialized_msg)
     current_time = round(time.time(), 5)
-    print(f"Time: {current_time}s Sent to RAN: {msg} \n")
+    #print(f"Time: {current_time}s Sent to RAN: {msg} \n")
 
 def send_blanking(ran_index, a, b):
     # Create an instance of the Blanking message
-    msg = scheduling_weights_pb2.Blanking()
+    msg = control_actions_pb2.Blanking()
     msg.ran_index = ran_index
     msg.a = a
     msg.b = b
@@ -65,7 +65,7 @@ def send_blanking(ran_index, a, b):
     # Send the serialized message over ZMQ
     publisher_blanking_socket.send(serialized_msg)
     current_time = round(time.time(), 5)
-    print(f"Time: {current_time}s Sent to RAN: {msg} \n")
+    #print(f"Time: {current_time}s Sent to RAN: {msg} \n")
     
 
 def receive():
@@ -76,7 +76,7 @@ def receive():
     metrics.ParseFromString(message)
     ran_index = metrics.tti_cnt
     ric_index = metrics.ric_cnt
-    print(f"RAN Index: {ran_index}, RIC index: {ric_index} \n")
+    #print(f"RAN Index: {ran_index}, RIC index: {ric_index} \n")
     return message
 
 def get_metrics_multi():
@@ -86,7 +86,7 @@ def get_metrics_multi():
     global global_sending_flag
     global correct, incorrect 
     message = receive()
-    ue_dict.clear()
+    ue_dict = {}
 
     #message = subscriber_cqi_snr_socket.recv()
     #print(f"Received from EdgeRIC: {message}")
@@ -141,8 +141,8 @@ def get_metrics_multi():
         ue_dict[rnti]['Pending Data'] = pending_data
 
 
-    print(f"RAN Index: {ran_index}, RIC index: {ric_index}, Correct count: {correct}, Incorrect count: {incorrect} \n")
-    print(f"UE Dictionary: {ue_dict} \n")
+    #print(f"RAN Index: {ran_index}, RIC index: {ric_index}, Correct count: {correct}, Incorrect count: {incorrect} \n")
+    #print(f"UE Dictionary: {ue_dict} \n")
     ue_data = ue_dict
     return ue_data
 

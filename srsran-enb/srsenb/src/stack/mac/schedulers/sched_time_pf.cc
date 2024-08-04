@@ -308,6 +308,7 @@ void sched_time_pf::sched_ul_users(sched_ue_list& ue_db, sf_sched* tti_sched)
   uint8_t num_ues = ue_db.size();
   float* weights = new float[num_ues];
   uint16_t* rbgs = new uint16_t[num_ues];
+  // pending_data_ul_local.clear();
 
   // Publish UL pending data
   std::ostringstream oss;

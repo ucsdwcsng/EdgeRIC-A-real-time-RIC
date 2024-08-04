@@ -1,6 +1,5 @@
 FROM edgeric_base_oaic:latest
 
-
 #Copy Code (Cur Dir to Container)
 WORKDIR "/home/EdgeRIC-A-real-time-RIC"
 COPY . .
@@ -12,7 +11,7 @@ WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-enb"
 RUN rm -rf build
 RUN mkdir build
 WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-enb/build"
-RUN cmake ..
+RUN cmake ../
 RUN make -j $(nproc)
 # RUN ./srsran_install_configs.sh user
 
@@ -22,7 +21,7 @@ WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-ue"
 RUN rm -rf build
 RUN mkdir build
 WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-ue/build"
-RUN cmake ..
+RUN cmake ../
 RUN make -j $(nproc)
 
 WORKDIR "/home/EdgeRIC-A-real-time-RIC"

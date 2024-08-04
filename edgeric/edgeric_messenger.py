@@ -1,6 +1,7 @@
 import zmq
 import time
 import threading
+import redis
 import sys
 import io
 import metrics_pb2
@@ -37,6 +38,12 @@ a = 0
 b = 0
 weights = []
 global_sending_flag = False
+flag_print = 0
+output_string = "RT-E2 Policy: None"
+
+redis_db = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+#redis_db.set("RT-E2 Report", "")
+
 
 def send_scheduling_weight(weights, flag):
     # Create an instance of the SchedulingWeights message
@@ -50,6 +57,11 @@ def send_scheduling_weight(weights, flag):
     # Send the serialized message over ZMQ
     publisher_weights_socket.send(serialized_msg)
     current_time = round(time.time(), 5)
+    output_string = f"RT-E2 Policy (Scheduling): \nSent to RAN: {msg} \n"
+    redis_db.set("RT-E2 Policy", output_string)
+    if (ran_index % 1000 == 0 and flag_print == 1): 
+        print("RT-E2 Policy (Scheduling): \n")
+        print(f"Sent to RAN: {msg} \n")
     #print(f"Time: {current_time}s Sent to RAN: {msg} \n")
 
 def send_blanking(ran_index, a, b):
@@ -85,6 +97,76 @@ def get_metrics_multi():
     global ric_index
     global global_sending_flag
     global correct, incorrect 
+    message = receive()
+    ue_dict = {}
+    #message = subscriber_cqi_snr_socket.recv()
+    #print(f"Received from EdgeRIC: {message}")
+    
+    metrics = metrics_pb2.Metrics()
+    metrics.ParseFromString(message)
+    ran_index = metrics.tti_cnt
+    ric_index = metrics.ric_cnt
+    if (ran_index-ric_index==1 or ran_index-ric_index==2): 
+        correct=correct+1
+        
+    else: 
+        incorrect = incorrect + 1
+        # while (not (ran_index-ric_index==1 or ran_index-ric_index==2)):
+        #     wts = [0] * (2 * 2)
+        #     wts[0] = 70
+        #     wts[1] = 0.5 
+        #     wts[2] = 71
+        #     wts[3] = 0.5
+        #     f = 1
+        #     send_scheduling_weight(wts, f)
+        #     message = receive()
+        #     metrics = metrics_pb2.Metrics()
+        #     metrics.ParseFromString(message)
+        #     ran_index = metrics.tti_cnt
+        #     ric_index = metrics.ric_cnt
+
+    for ue_metric in metrics.ue_metrics:
+        rnti = ue_metric.rnti
+        cqi = ue_metric.cqi
+        backlog = ue_metric.backlog
+        snr = ue_metric.snr
+        pending_data = ue_metric.pending_data
+        tx_bytes = ue_metric.tx_bytes
+        rx_bytes = ue_metric.rx_bytes
+
+        if rnti not in ue_dict:
+            ue_dict[rnti] = {
+                'CQI': None,
+                'SNR': None,
+                'Backlog': None,
+                'Pending Data': None,
+                'Tx_brate': None,
+                'Rx_brate': None
+            }
+
+        ue_dict[rnti]['CQI'] = cqi
+        ue_dict[rnti]['SNR'] = snr
+        ue_dict[rnti]['Backlog'] = backlog
+        ue_dict[rnti]['Tx_brate'] = tx_bytes
+        ue_dict[rnti]['Rx_brate'] = rx_bytes
+        ue_dict[rnti]['Pending Data'] = pending_data
+
+
+    if (ran_index % 1000 == 0 and flag_print == 1): 
+        print("RT-E2 Report: \n")
+        print(f"RAN Index: {ran_index}, RIC index: {ric_index}, Correct count: {correct}, Incorrect count: {incorrect} \n")
+        print(f"UE Dictionary: {ue_dict} \n")
+    #strings = f"RT-E2 Report: \n RAN Index: {ran_index}, RIC index: {ric_index}\n, UE Dictionary: {ue_dict} \n"
+    #redis_db.set("RT-E2 Report", strings)    
+    ue_data = ue_dict
+    return ue_data
+
+def get_metrics_multi_monitor():
+    global ue_dict
+    global ran_index
+    global ric_index
+    global global_sending_flag
+    global correct, incorrect
     message = receive()
     ue_dict = {}
 
@@ -140,10 +222,6 @@ def get_metrics_multi():
         ue_dict[rnti]['Rx_brate'] = rx_bytes
         ue_dict[rnti]['Pending Data'] = pending_data
 
-
-    #print(f"RAN Index: {ran_index}, RIC index: {ric_index}, Correct count: {correct}, Incorrect count: {incorrect} \n")
-    #print(f"UE Dictionary: {ue_dict} \n")
     ue_data = ue_dict
-    return ue_data
 
-
+    return ue_data, ran_index, ric_index

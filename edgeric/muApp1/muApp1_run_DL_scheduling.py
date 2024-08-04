@@ -316,7 +316,7 @@ rl_model_mapping = {
 
 
 # Establish a Redis connection (assuming Redis server is running locally)
-#redis_db = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+redis_db = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 # # REDIS server for ploting 
 #redis_db = redis.StrictRedis(host = 'localhost', port=6379, decode_responses = False, db=0)
@@ -327,16 +327,16 @@ if __name__ == "__main__":
     while True:
        
         try:
-            #selected_algorithm = redis_db.get('scheduling_algorithm')
-            selected_algorithm = "RL"
+            selected_algorithm = redis_db.get('scheduling_algorithm')
+            #selected_algorithm = "Max Weight"
             if selected_algorithm:
                 idx_algo = algorithm_mapping.get(selected_algorithm, None)
 
                 if idx_algo is not None:
-                    print("Algorithm index: ", idx_algo)
+                    print("Algorithm index: ", idx_algo, " , ", selected_algorithm)
                     if idx_algo < 20:
-                        eval_loop_weight(10000, idx_algo)  # For traditional scheduling algorithms
-                        print(f"total: {np.mean(total_brate)} \n") 
+                        eval_loop_weight(1000, idx_algo)  # For traditional scheduling algorithms
+                        print(f"total system throughput: {np.mean(total_brate)*8/1000} \n") 
                         total_brate.clear()
                     elif idx_algo == 20:  # For RL model execution
                         # Fetch the specific RL model from Redis
@@ -346,8 +346,8 @@ if __name__ == "__main__":
                             rl_model_path = rl_model_mapping.get(rl_model_name)
                             if rl_model_path:
                                 print(f"Executing RL model at: {rl_model_path}")
-                                eval_loop_model(10000, rl_model_path)
-                                print(f"total: {np.mean(total_brate)} \n") 
+                                eval_loop_model(1000, rl_model_path)
+                                print(f"total system throughput: {np.mean(total_brate)*8/1000} \n") 
                                 total_brate.clear()
                             else:
                                 print(f"Unknown RL model selected: {rl_model_name}")

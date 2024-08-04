@@ -672,10 +672,15 @@ void mac::ric_comm()
   edgeric::setTTI(tti_ran_index);
 
   edgeric::setULsnr(snr_ul_ues);
+  // snr_ul_ues.clear();
   edgeric::setbacklogDL(backlogBuffer);
+  // backlogBuffer.clear();
   edgeric::setDLcqi(cqi_dl_ues);
+  // cqi_dl_ues.clear();
   edgeric::setRXbytes(rx_bytes_ues);
+  // rx_bytes_ues.clear();
   edgeric::setTXbytes(tx_bytes_ues);
+  // tx_bytes_ues.clear();
 
   edgeric::printmyvariables();
   edgeric::send_to_er_protobuf();
@@ -686,7 +691,7 @@ void mac::calFairness_dl(sched_interface::dl_sched_res_t sched_result_dl)
 {
   uint32_t tx_bytes = 0;
   uint8_t  sz2      = sched_result_dl.data.size();
-
+  // tx_bytes_ues.clear();
   for (auto& u : ue_db) {
     uint16_t rnti      = u.first;
     tx_bytes_ues[rnti] = 0;
@@ -708,7 +713,7 @@ void mac::calFairness_ul(sched_interface::ul_sched_res_t sched_result_ul)
 {
   uint32_t rx_bytes = 0;
   uint8_t  sz       = sched_result_ul.pusch.size();
-
+  // rx_bytes_ues.clear();
   for (auto& u : ue_db) {
     uint16_t rnti      = u.first;
     rx_bytes_ues[rnti] = 0;
@@ -725,8 +730,14 @@ void mac::calFairness_ul(sched_interface::ul_sched_res_t sched_result_ul)
 
 int mac::get_dl_sched(uint32_t tti_tx_dl, dl_sched_list_t& dl_sched_res_list)
 {
+  // srsran::rwlock_write_guard lock2(rwlock);
+  // cqi_dl_ues.clear();
+  // snr_ul_ues.clear();
+  // backlogBuffer.clear();
+  // rx_bytes_ues.clear();
+  // tx_bytes_ues.clear();
   edgeric::receive_from_er_protobuf();
-  ric_comm();
+  
   if (!started) {
     return 0;
   }
@@ -748,7 +759,7 @@ int mac::get_dl_sched(uint32_t tti_tx_dl, dl_sched_list_t& dl_sched_res_list)
       return SRSRAN_ERROR;
     }
     calFairness_dl(sched_result);
-
+    ric_comm();
     int         n            = 0;
     dl_sched_t* dl_sched_res = &dl_sched_res_list[enb_cc_idx];
 
@@ -908,7 +919,7 @@ int mac::get_dl_sched(uint32_t tti_tx_dl, dl_sched_list_t& dl_sched_res_list)
   for (auto& u : ue_db) {
     u.second->metrics_cnt();
   }
-
+  
   return SRSRAN_SUCCESS;
 }
 

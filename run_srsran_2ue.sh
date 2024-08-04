@@ -71,4 +71,14 @@ sleep 2
 
 
 echo "./srsue/src/srsue2 ../../.config/ue2.conf --rf.device_name=zmq --rf.device_args=tx_port=tcp://*:2011,rx_port=tcp://localhost:2010,id=ue,base_srate=23.04e6 --gw.netns=ue2 --params_filename="../params2.txt""
-./srsue/src/srsue2 ../../.config/ue2.conf --rf.device_name=zmq --rf.device_args="tx_port=tcp://*:2011,rx_port=tcp://localhost:2010,id=ue,base_srate=23.04e6" --gw.netns=ue2 --params_filename="../params2.txt"
+./srsue/src/srsue2 ../../.config/ue2.conf --rf.device_name=zmq --rf.device_args="tx_port=tcp://*:2011,rx_port=tcp://localhost:2010,id=ue,base_srate=23.04e6" --gw.netns=ue2 --params_filename="../params2.txt" &
+
+sleep 3
+
+#ip netns exec ue1 ping 172.16.0.1 & > /dev/null 2>&1 &
+ping 172.16.0.2 > /dev/null 2>&1 &
+
+sleep 3
+
+# ip netns exec ue2 ping 172.16.0.1 > /dev/null 2>&1
+ping 172.16.0.3 > /dev/null 2>&1

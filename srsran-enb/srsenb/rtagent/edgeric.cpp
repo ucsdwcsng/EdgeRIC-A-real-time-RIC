@@ -232,9 +232,9 @@ void edgeric::receive_from_er() {
             b = std::stoi(tokens[tokens.size() - 1]);
         } else{
             stale_flag = 1;
-            weights_recved = {};
-            a = 0;
-            b = 0;
+            // weights_recved = {};
+            // a = 0;
+            // b = 0;
         }
     }
     }else{

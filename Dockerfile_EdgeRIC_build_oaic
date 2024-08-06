@@ -61,6 +61,24 @@ RUN apt-get install -y libprotobuf-dev protobuf-compiler
 # RUN rm -rf build
 # RUN mkdir build
 # WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-enb/build"
+# RUN cmake ../
+# RUN make -j $(nproc)
+# # RUN ./srsran_install_configs.sh user
+
+
+# ## Compile srsran for ue
+# WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-ue"
+# RUN rm -rf build
+# RUN mkdir build
+# WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-ue/build"
+# RUN cmake ../
+# RUN make -j $(nproc)
+
+WORKDIR "/home/EdgeRIC-A-real-time-RIC"
+# WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-enb"
+# RUN rm -rf build
+# RUN mkdir build
+# WORKDIR "/home/EdgeRIC-A-real-time-RIC/srsran-enb/build"
 # RUN cmake ..
 # RUN make -j $(nproc)
 # RUN make install

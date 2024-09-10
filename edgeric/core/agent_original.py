@@ -49,7 +49,7 @@ def collect_samples(pid, queue, env, policy, custom_reward,
             RNTIs = list(ue_data.keys())
             BLs = [data['Backlog'] for data in ue_data.values()]
             mbs = np.ones(numues)*300000 
-            txb = [data['Backlog'] for data in ue_data.values()]   
+            txb = [data['Tx_brate'] for data in ue_data.values()]   
             tx_bytes = np.sum(txb)   
 
             next_state, reward, done, _ = env.step(action, RNTIs, CQIs, BLs, tx_bytes, mbs)

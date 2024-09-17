@@ -138,7 +138,7 @@ parser.add_argument(
 parser.add_argument("--gpu-index", type=int, default=0, metavar="N")
 args = parser.parse_args()
 
-@hydra.main(config_path="conf", config_name="edge_ric") #, version_base=None)
+@hydra.main(config_path="conf", config_name="edge_ric", version_base=None)
 def main(conf):
 
     dtype = torch.float32
@@ -329,7 +329,7 @@ def main(conf):
                 RNTIs = list(ue_data.keys())
                 BLs = [data['Backlog'] for data in ue_data.values()]
                 mbs = np.ones(numues)*300000 
-                txb = [data['Backlog'] for data in ue_data.values()]   
+                txb = [data['Tx_brate'] for data in ue_data.values()]   
                 tx_bytes = np.sum(txb)   
                         
                 obs, reward, done, info = env.step(action, RNTIs, CQIs, BLs, tx_bytes, MBs)

@@ -33,6 +33,8 @@ endif (RPATH)
 
 add_executable(srsue main.cc ue.cc metrics_stdout.cc metrics_csv.cc metrics_json.cc)
 add_executable(srsue2 main.cc ue.cc metrics_stdout.cc metrics_csv.cc metrics_json.cc)
+add_executable(srsue3 main.cc ue.cc metrics_stdout.cc metrics_csv.cc metrics_json.cc)
+add_executable(srsue4 main.cc ue.cc metrics_stdout.cc metrics_csv.cc metrics_json.cc)
 
 set(SRSUE_SOURCES srsue_phy srsue_stack srsue_upper srsue_mac srsue_rrc srslog system)
 set(SRSRAN_SOURCES srsran_common srsran_mac srsran_phy srsran_radio srsran_gtpu srsran_rlc srsran_pdcp rrc_asn1 srslog support system)
@@ -47,13 +49,24 @@ target_link_libraries(srsue   ${SRSUE_SOURCES}
                               ${ATOMIC_LIBS})
 
 
-target_link_libraries(srsue2   ${SRSUE_SOURCES}
+target_link_libraries(srsue2  ${SRSUE_SOURCES}
                               ${SRSRAN_SOURCES}
                               ${CMAKE_THREAD_LIBS_INIT}
                               ${Boost_LIBRARIES}
                               ${ATOMIC_LIBS})
 
 
+target_link_libraries(srsue3  ${SRSUE_SOURCES}
+                              ${SRSRAN_SOURCES}
+                              ${CMAKE_THREAD_LIBS_INIT}
+                              ${Boost_LIBRARIES}
+                              ${ATOMIC_LIBS})                             
+
+target_link_libraries(srsue4  ${SRSUE_SOURCES}
+                              ${SRSRAN_SOURCES}
+                              ${CMAKE_THREAD_LIBS_INIT}
+                              ${Boost_LIBRARIES}
+                              ${ATOMIC_LIBS})
 
 
 if (RPATH)
@@ -65,6 +78,13 @@ if (RPATH)
   set_target_properties(srsue2 PROPERTIES INSTALL_RPATH ".")
 endif (RPATH)
 
+if (RPATH)
+  set_target_properties(srsue3 PROPERTIES INSTALL_RPATH ".")
+endif (RPATH)
+
+if (RPATH)
+  set_target_properties(srsue4 PROPERTIES INSTALL_RPATH ".")
+endif (RPATH)
 ########################################################################
 # UE initialization test
 ########################################################################
@@ -94,3 +114,5 @@ endif (NOT ${BUILDUE_CMD} STREQUAL "")
 
 install(TARGETS srsue DESTINATION ${RUNTIME_DIR} OPTIONAL)
 install(TARGETS srsue2 DESTINATION ${RUNTIME_DIR} OPTIONAL)
+install(TARGETS srsue3 DESTINATION ${RUNTIME_DIR} OPTIONAL)
+install(TARGETS srsue4 DESTINATION ${RUNTIME_DIR} OPTIONAL)
